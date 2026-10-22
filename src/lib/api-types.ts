@@ -76,6 +76,14 @@ export interface ShippingAddress {
   note?: string;
 }
 
+export interface OrderStatusHistoryItem {
+  status: string;
+  changedBy: string;
+  changedByName?: string;
+  changedAt: string;
+  note?: string;
+}
+
 export interface Order {
   _id: string;
   userId?: { _id: string; name: string; email: string; phone?: string };
@@ -93,6 +101,7 @@ export interface Order {
   isDelivered: boolean;
   deliveredAt?: string;
   status: 'PENDING' | 'ACCEPTED' | 'COURIERED' | 'DELIVERED' | 'CANCELLED' | 'RETURNED' | 'EXCHANGE';
+  statusHistory?: OrderStatusHistoryItem[];
   couponCode?: string;
   bkashNumber?: string;
   bkashTxnId?: string;
@@ -118,6 +127,16 @@ export interface Slider {
   createdAt: string;
 }
 
+export interface FeaturedCategorySectionConfig {
+  enabled: boolean;
+  category: string;
+  title: string;
+  tagline: string;
+  badge: string;
+  bannerImage: string;
+  buttonText: string;
+}
+
 export interface SiteSettings {
   title: string;
   tagline: string;
@@ -135,6 +154,7 @@ export interface SiteSettings {
     whatsapp?: string;
     tiktok?: string;
   };
+  featuredCategorySection?: FeaturedCategorySectionConfig;
 }
 
 export interface UserItem {
@@ -144,6 +164,7 @@ export interface UserItem {
   phone?: string;
   address?: string;
   role: string;
+  permissions?: string[];
   orderCount: number;
   totalSpent: number;
   createdAt: string;
@@ -156,6 +177,21 @@ export interface DashboardStats {
   totalUsers: number;
   salesHistory: Array<{ _id: string; totalSales: number; orderCount: number }>;
   orderStatusDistribution: Array<{ _id: string; count: number }>;
+}
+
+export interface ActivityLogItem {
+  _id: string;
+  userId: string;
+  userName: string;
+  userEmail: string;
+  userRole: string;
+  action: string;
+  entityType: string;
+  entityId?: string;
+  entityTitle?: string;
+  description: string;
+  details?: Record<string, any>;
+  createdAt: string;
 }
 
 export interface ApiResponse<T> {

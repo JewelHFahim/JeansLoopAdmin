@@ -24,8 +24,9 @@ export default function AdminLoginPage() {
       const res = await authApi.login({ email, password });
       const { user, token } = res.data.data;
 
-      if (user.role !== 'ADMIN' && user.role !== 'SUPER_ADMIN') {
-        toast.error('Access Denied. Administrator privileges required.');
+      const allowedRoles = ['ADMIN', 'SUPER_ADMIN', 'MANAGER', 'STAFF'];
+      if (!allowedRoles.includes(user.role)) {
+        toast.error('Access Denied. Administrative privileges required.');
         setLoading(false);
         return;
       }
@@ -33,7 +34,11 @@ export default function AdminLoginPage() {
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
 
-      toast.success('Administrator authenticated.');
+      toast.success(
+        user.role === 'ADMIN' || user.role === 'SUPER_ADMIN'
+          ? 'Administrator authenticated.'
+          : 'Staff / Manager authenticated.'
+      );
       router.push('/dashboard');
     } catch (err: any) {
       toast.error(err.response?.data?.message || 'Authentication failed');

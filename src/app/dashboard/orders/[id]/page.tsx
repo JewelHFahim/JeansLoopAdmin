@@ -19,7 +19,7 @@ export default function AdminOrderDetailsPage({ params }: { params: Promise<{ id
   const { id } = use(params);
   const queryClient = useQueryClient();
 
-  const { data: res, isLoading } = useQuery({
+  const { data: res, isLoading, error } = useQuery({
     queryKey: ['order', id],
     queryFn: async () => {
       const response = await ordersApi.getById(id);
@@ -87,8 +87,16 @@ export default function AdminOrderDetailsPage({ params }: { params: Promise<{ id
 
   if (!order) {
     return (
-      <div className="p-8 border-2 border-black bg-white text-center">
-        <p className="font-bold uppercase text-xs">Order Not Found</p>
+      <div className="p-8 border-2 border-black bg-white text-center space-y-3 max-w-md mx-auto my-12 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+        <p className="font-black uppercase text-sm text-black">Order Not Found</p>
+        <p className="text-xs text-neutral-500">
+          {(error as any)?.response?.data?.message || 'The requested order could not be loaded.'}
+        </p>
+        <Link href="/dashboard/orders">
+          <Button size="sm" variant="outline" className="mt-2 text-xs uppercase font-bold">
+            Back to Orders List
+          </Button>
+        </Link>
       </div>
     );
   }
@@ -286,6 +294,44 @@ export default function AdminOrderDetailsPage({ params }: { params: Promise<{ id
                 ))}
               </select>
             </div>
+            {/* Status Progression Audit Timeline */}
+            {order.statusHistory && order.statusHistory.length > 0 && (
+              <div className="border-t-2 border-black pt-4 space-y-3">
+                <p className="text-[10px] font-black uppercase tracking-widest text-neutral-400">
+                  Status History ({order.statusHistory.length})
+                </p>
+                <div className="space-y-2.5 max-h-48 overflow-y-auto pr-1">
+                  {order.statusHistory.map((historyItem, idx) => {
+                    const dt = new Date(historyItem.changedAt);
+                    return (
+                      <div
+                        key={idx}
+                        className="p-2.5 bg-neutral-50 border border-neutral-200 text-xs space-y-0.5"
+                      >
+                        <div className="flex justify-between items-center">
+                          <span className="font-black uppercase text-black">
+                            {historyItem.status}
+                          </span>
+                          <span className="text-[10px] text-neutral-400 font-mono">
+                            {dt.toLocaleDateString('en-GB', {
+                              day: '2-digit',
+                              month: 'short',
+                            })}{' '}
+                            {dt.toLocaleTimeString('en-US', {
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })}
+                          </span>
+                        </div>
+                        <p className="text-[10px] text-neutral-600 font-medium">
+                          By: {historyItem.changedByName || historyItem.changedBy}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Payment & Financials */}

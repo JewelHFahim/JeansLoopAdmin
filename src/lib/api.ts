@@ -8,6 +8,7 @@ import type {
   SiteSettings,
   UserItem,
   DashboardStats,
+  ActivityLogItem,
   ApiResponse,
   PaginatedResponse,
 } from './api-types';
@@ -177,6 +178,16 @@ export const slidersApi = {
 export const usersApi = {
   getAll: (params?: { page?: number; limit?: number; keyword?: string }) =>
     apiClient.get<PaginatedResponse<UserItem>>('/users', { params }),
+  create: (data: {
+    name: string;
+    email: string;
+    password: string;
+    phone?: string;
+    role: string;
+    permissions?: string[];
+  }) => apiClient.post<ApiResponse<UserItem>>('/users', data),
+  updateRole: (id: string, data: { role: string; permissions: string[] }) =>
+    apiClient.put<ApiResponse<UserItem>>(`/users/${id}/role`, data),
   delete: (id: string) => apiClient.delete<ApiResponse<null>>(`/users/${id}`),
 };
 
@@ -187,6 +198,11 @@ export const settingsApi = {
 
 export const statsApi = {
   getDashboard: () => apiClient.get<ApiResponse<DashboardStats>>('/stats'),
+};
+
+export const activityLogsApi = {
+  getAll: (params?: { page?: number; limit?: number; entityType?: string; entityId?: string; keyword?: string }) =>
+    apiClient.get<PaginatedResponse<ActivityLogItem>>('/activity-logs', { params }),
 };
 
 export const uploadApi = {

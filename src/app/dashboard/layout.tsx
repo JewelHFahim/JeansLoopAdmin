@@ -16,6 +16,8 @@ import {
   Menu,
   X,
   ExternalLink,
+  ShieldAlert,
+  ShieldCheck,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { authApi } from '@/lib/api';
@@ -59,23 +61,53 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   if (!user) return null;
 
-  const navLinks = [
-    { href: '/dashboard', label: 'Command Center', icon: LayoutDashboard },
-    { href: '/dashboard/products', label: 'Products', icon: Package },
-    { href: '/dashboard/orders', label: 'Orders', icon: ShoppingCart },
-    { href: '/dashboard/users', label: 'Users', icon: Users },
-    { href: '/dashboard/settings/categories', label: 'Categories', icon: Layers },
-    { href: '/dashboard/settings/coupons', label: 'Coupons', icon: Tag },
-    { href: '/dashboard/sliders', label: 'Hero Sliders', icon: SlidersHorizontal },
-    { href: '/dashboard/settings/site', label: 'Site Settings', icon: Settings },
+  const isAdmin = user.role === 'ADMIN' || user.role === 'SUPER_ADMIN';
+  const userPermissions: string[] = Array.isArray(user.permissions) ? user.permissions : [];
+
+  const allNavLinks = [
+    { href: '/dashboard', label: 'Command Center', icon: LayoutDashboard, permission: 'dashboard' },
+    { href: '/dashboard/products', label: 'Products', icon: Package, permission: 'products' },
+    { href: '/dashboard/orders', label: 'Orders', icon: ShoppingCart, permission: 'orders' },
+    { href: '/dashboard/users', label: 'Users & Staff', icon: Users, permission: 'users', adminOnly: true },
+    { href: '/dashboard/settings/categories', label: 'Categories', icon: Layers, permission: 'categories' },
+    { href: '/dashboard/settings/coupons', label: 'Coupons', icon: Tag, permission: 'coupons' },
+    { href: '/dashboard/sliders', label: 'Hero Sliders', icon: SlidersHorizontal, permission: 'sliders' },
+    { href: '/dashboard/settings/site', label: 'Site Settings', icon: Settings, permission: 'settings' },
   ];
+
+  // Filter links for secondary staff/manager roles
+  const navLinks = allNavLinks.filter((link) => {
+    if (isAdmin) return true;
+    if (link.adminOnly) return false;
+    return userPermissions.includes(link.permission) || userPermissions.includes('*');
+  });
+
+  // Verify access to active route
+  const currentLink = allNavLinks.find(
+    (l) => pathname === l.href || (l.href !== '/dashboard' && pathname.startsWith(l.href))
+  );
+
+  const isAccessDenied =
+    !isAdmin &&
+    currentLink &&
+    (currentLink.adminOnly ||
+      (!userPermissions.includes(currentLink.permission) && !userPermissions.includes('*')));
 
   const storefrontUrl = process.env.NEXT_PUBLIC_STOREFRONT_URL || 'http://localhost:3000';
 
+  // Dedicated clean view for invoice printing (strips all admin navigation and sidebars)
+  if (pathname?.includes('/invoice')) {
+    return (
+      <div className="min-h-screen bg-neutral-100 print:bg-white print:m-0 print:p-0">
+        {children}
+      </div>
+    );
+  }
+
   return (
-    <div className="flex h-screen bg-white overflow-hidden">
+    <div className="flex h-screen bg-white overflow-hidden print:h-auto print:overflow-visible">
       {/* Mobile Header */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 border-b-4 border-black bg-white flex items-center justify-between px-4 z-40">
+      <div className="lg:hidden print:hidden fixed top-0 left-0 right-0 h-16 border-b-4 border-black bg-white flex items-center justify-between px-4 z-40">
         <h1 className="text-xl font-black uppercase italic tracking-tighter">JeansLoop / Admin</h1>
         <button
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -87,15 +119,26 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-black text-white border-r-4 border-black flex flex-col transition-transform duration-300 lg:relative lg:translate-x-0 ${
+        className={`print:hidden fixed inset-y-0 left-0 z-50 w-64 bg-black text-white border-r-4 border-black flex flex-col transition-transform duration-300 lg:relative lg:translate-x-0 ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <div className="p-6 border-b-2 border-neutral-800">
-          <h1 className="text-2xl font-black uppercase italic tracking-tighter text-white">
-            JeansLoop
-          </h1>
-          <p className="text-[10px] font-mono text-neutral-400 truncate mt-1">{user.email}</p>
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-black uppercase italic tracking-tighter text-white">
+              JeansLoop
+            </h1>
+            <span
+              className={`px-2 py-0.5 text-[9px] font-black uppercase tracking-wider border ${
+                isAdmin
+                  ? 'bg-white text-black border-white'
+                  : 'bg-neutral-800 text-neutral-300 border-neutral-700'
+              }`}
+            >
+              {isAdmin ? 'ADMIN' : 'STAFF'}
+            </span>
+          </div>
+          <p className="text-[10px] font-mono text-neutral-400 truncate mt-1.5">{user.email}</p>
         </div>
 
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
@@ -142,8 +185,29 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 overflow-y-auto pt-16 lg:pt-0 p-6 md:p-10 bg-neutral-50">
-        <div className="max-w-7xl mx-auto">{children}</div>
+      <main className="flex-1 overflow-y-auto pt-16 lg:pt-0 p-6 md:p-10 bg-neutral-50 print:p-0 print:m-0 print:bg-white print:overflow-visible">
+        <div className="max-w-7xl mx-auto print:max-w-none print:w-full">
+          {isAccessDenied ? (
+            <div className="min-h-[50vh] flex flex-col items-center justify-center text-center p-8 border-2 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] max-w-lg mx-auto my-12">
+              <ShieldAlert className="w-12 h-12 text-red-600 mb-3" />
+              <h2 className="text-xl font-black uppercase italic tracking-tight">Access Restricted</h2>
+              <p className="text-xs text-neutral-600 mt-2">
+                Your role (<strong>{user.role}</strong>) does not have permission to access the{' '}
+                <strong>{currentLink?.label || 'requested'}</strong> module.
+              </p>
+              <p className="text-[11px] text-neutral-400 mt-1">
+                Please ask the primary store administrator to grant permission for your account.
+              </p>
+              {navLinks.length > 0 && (
+                <Link href={navLinks[0].href} className="mt-6">
+                  <Button size="sm">Go to {navLinks[0].label}</Button>
+                </Link>
+              )}
+            </div>
+          ) : (
+            children
+          )}
+        </div>
       </main>
     </div>
   );

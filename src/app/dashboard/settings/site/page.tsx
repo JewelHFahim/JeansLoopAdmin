@@ -138,53 +138,59 @@ export default function SiteSettingsPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <span className="ml-3 text-sm font-semibold text-muted-foreground">
-          Loading site configurations...
-        </span>
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 max-w-5xl mx-auto pb-16">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b gap-4">
+    <form onSubmit={handleSubmit} className="space-y-6 max-w-6xl">
+      {/* Page Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-foreground">Site Configuration</h1>
-          <p className="text-sm text-muted-foreground">
-            Manage global store identity, brand logo, contact channels, and social media connectivity.
+          <h1 className="text-2xl font-black uppercase tracking-tight text-neutral-900">
+            System & Brand Settings
+          </h1>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            Manage global storefront metadata, brand logo, and contact configurations
           </p>
         </div>
-        <Button type="submit" disabled={updateMutation.isPending} className="self-start sm:self-auto">
+        <Button
+          type="submit"
+          disabled={updateMutation.isPending}
+          className="bg-black text-white hover:bg-neutral-800 font-bold self-start sm:self-auto"
+        >
           {updateMutation.isPending ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" /> Saving...
+            </>
           ) : (
-            <Save className="mr-2 h-4 w-4" />
+            <>
+              <Save className="w-4 h-4 mr-2" /> Save Settings
+            </>
           )}
-          Save Changes
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Visual Branding & Announcements (Left column) */}
-        <div className="lg:col-span-1 space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Left Column (Brand Media & Announcement) */}
+        <div className="space-y-6 lg:col-span-1">
           {/* Logo Card */}
           <Card>
             <CardHeader>
               <CardTitle className="text-base flex items-center gap-2">
                 <ImageIcon className="w-4 h-4 text-primary" />
-                Store Logo
+                Storefront Logo
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="aspect-video w-full rounded-lg border-2 border-dashed border-muted-foreground/30 bg-muted/40 flex items-center justify-center relative overflow-hidden group">
+              <div className="relative group border-2 border-dashed border-neutral-300 rounded-lg p-4 flex flex-col items-center justify-center min-h-[160px] bg-neutral-50 overflow-hidden">
                 {logoPreview ? (
                   <>
                     <img
                       src={logoPreview}
-                      alt="Site Logo"
-                      className="max-h-full max-w-full object-contain p-3"
+                      alt="Logo preview"
+                      className="max-h-24 w-auto object-contain transition-transform group-hover:scale-105"
                     />
                     <button
                       type="button"
@@ -258,9 +264,9 @@ export default function SiteSettingsPage() {
           </Card>
         </div>
 
-        {/* Core Settings & Social Links (Right 2 columns) */}
+        {/* Right 2 Columns (Core Settings) */}
         <div className="lg:col-span-2 space-y-6">
-          {/* General Information */}
+          {/* General Information Card */}
           <Card>
             <CardHeader>
               <CardTitle className="text-base flex items-center gap-2">
@@ -278,75 +284,69 @@ export default function SiteSettingsPage() {
                     value={formData.title}
                     onChange={handleChange}
                     required
-                    placeholder="JeansLoop"
                   />
                 </div>
 
                 <div className="space-y-1.5 md:col-span-2">
-                  <Label htmlFor="tagline">Tagline / Slogan</Label>
+                  <Label htmlFor="tagline">Platform Tagline / Slogan</Label>
                   <Input
                     id="tagline"
                     name="tagline"
-                    value={formData.tagline || ''}
+                    value={formData.tagline}
                     onChange={handleChange}
-                    placeholder="Premium Denim & Everyday Essentials"
                   />
                 </div>
 
                 <div className="space-y-1.5">
                   <Label htmlFor="email" className="flex items-center gap-1.5">
                     <Mail className="w-3.5 h-3.5 text-muted-foreground" />
-                    Public Support Email
+                    Support Email
                   </Label>
                   <Input
                     id="email"
                     name="email"
                     type="email"
-                    value={formData.email || ''}
+                    value={formData.email}
                     onChange={handleChange}
-                    placeholder="support@jeansloop.com"
                   />
                 </div>
 
                 <div className="space-y-1.5">
                   <Label htmlFor="phone" className="flex items-center gap-1.5">
                     <Phone className="w-3.5 h-3.5 text-muted-foreground" />
-                    Customer Support Phone
+                    Contact Phone
                   </Label>
                   <Input
                     id="phone"
                     name="phone"
-                    value={formData.phone || ''}
+                    value={formData.phone}
                     onChange={handleChange}
-                    placeholder="+880 1700-000000"
                   />
                 </div>
 
                 <div className="space-y-1.5 md:col-span-2">
                   <Label htmlFor="address" className="flex items-center gap-1.5">
                     <MapPin className="w-3.5 h-3.5 text-muted-foreground" />
-                    Store / Office Address
+                    Physical Outlet / Headquarters Address
                   </Label>
                   <Input
                     id="address"
                     name="address"
-                    value={formData.address || ''}
+                    value={formData.address}
                     onChange={handleChange}
-                    placeholder="House 12, Road 4, Banani, Dhaka-1213, Bangladesh"
                   />
                 </div>
 
                 <div className="space-y-1.5">
                   <Label htmlFor="businessHours" className="flex items-center gap-1.5">
                     <Clock className="w-3.5 h-3.5 text-muted-foreground" />
-                    Business Hours
+                    Operational Business Hours
                   </Label>
                   <Input
                     id="businessHours"
                     name="businessHours"
                     value={formData.businessHours || ''}
                     onChange={handleChange}
-                    placeholder="Sat - Thu: 10:00 AM - 8:00 PM"
                   />
                 </div>
 
