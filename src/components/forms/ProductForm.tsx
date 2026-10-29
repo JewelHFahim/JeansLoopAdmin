@@ -175,21 +175,30 @@ export function ProductForm({
     });
   };
 
-  // Image upload
+  // Image upload (supports single or multiple file selection)
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const fileList = e.target.files;
+    if (!fileList || fileList.length === 0) return;
+    const files = Array.from(fileList);
 
     setUploadingImage(true);
     try {
-      const res = await uploadApi.uploadImage(file);
-      const url = res.data.data.image;
-      setForm((prev) => ({ ...prev, images: [...prev.images, url] }));
-      toast.success('Image uploaded successfully');
+      if (files.length === 1) {
+        const res = await uploadApi.uploadImage(files[0]);
+        const url = res.data.data.image;
+        setForm((prev) => ({ ...prev, images: [...prev.images, url] }));
+        toast.success('Image optimized and uploaded');
+      } else {
+        const res = await uploadApi.uploadMultiple(files);
+        const urls = res.data.data.images;
+        setForm((prev) => ({ ...prev, images: [...prev.images, ...urls] }));
+        toast.success(`${urls.length} images optimized and uploaded`);
+      }
     } catch (err: any) {
-      toast.error(err.response?.data?.message || 'Failed to upload image');
+      toast.error(err.response?.data?.message || 'Failed to upload images');
     } finally {
       setUploadingImage(false);
+      e.target.value = '';
     }
   };
 
@@ -1011,6 +1020,7 @@ export function ProductForm({
                 <input
                   type="file"
                   accept="image/*"
+                  multiple
                   onChange={handleImageUpload}
                   disabled={uploadingImage}
                   className="hidden"

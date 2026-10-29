@@ -260,7 +260,7 @@ export default function SlidersManagementPage() {
               </label>
               {form.image && (
                 <div className="relative w-32 h-16 border-2 border-black overflow-hidden bg-neutral-100">
-                  <Image src={form.image} alt="Slide Preview" fill className="object-cover" />
+                  <Image src={form.image} alt="Slide Preview" fill sizes="128px" className="object-cover" />
                 </div>
               )}
             </div>
@@ -293,7 +293,7 @@ export default function SlidersManagementPage() {
             className="border-2 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden"
           >
             <div className="relative h-48 w-full bg-neutral-100 border-b-2 border-black">
-              {s.image && <Image src={s.image} alt={s.title} fill className="object-cover" />}
+              {s.image && <Image src={s.image} alt={s.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />}
               <div className="absolute top-2 left-2 bg-black text-white px-2 py-0.5 text-[9px] font-black uppercase">
                 Order #{s.order} — {s.isActive ? 'Active' : 'Inactive'}
               </div>

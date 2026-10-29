@@ -211,4 +211,9 @@ export const uploadApi = {
     formData.append('image', file);
     return apiClient.post<ApiResponse<{ image: string }>>('/upload', formData);
   },
+  uploadMultiple: (files: File[]) => {
+    const formData = new FormData();
+    files.forEach((file) => formData.append('images', file));
+    return apiClient.post<ApiResponse<{ images: string[] }>>('/upload/multiple', formData);
+  },
 };
