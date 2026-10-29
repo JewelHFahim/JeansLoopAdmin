@@ -257,7 +257,7 @@ export default function InvoicePage({ params }: { params: Promise<{ id: string }
 
         {/* Footer */}
         <div className="border-t border-neutral-200 pt-6 text-center text-xs text-neutral-500">
-          <p>Thank you for shopping with JeansLoop!</p>
+          <p>Thank you for shopping with {settings?.title || 'JeansLoop'}!</p>
           <p className="text-[10px] text-neutral-400 mt-1">
             For support or size exchanges, contact us at {settings?.email || 'support@jeansloop.com'} or {settings?.phone || '+880 1700-000000'}.
           </p>

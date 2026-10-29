@@ -20,13 +20,23 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { authApi } from '@/lib/api';
+import { authApi, settingsApi } from '@/lib/api';
+import { useQuery } from '@tanstack/react-query';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const [user, setUser] = useState<any>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const { data: settingsRes } = useQuery({
+    queryKey: ['site-settings'],
+    queryFn: async () => {
+      const res = await settingsApi.get();
+      return res.data.data;
+    },
+  });
+  const siteTitle = settingsRes?.title || 'JeansLoop';
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -108,7 +118,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     <div className="flex h-screen bg-white overflow-hidden print:h-auto print:overflow-visible">
       {/* Mobile Header */}
       <div className="lg:hidden print:hidden fixed top-0 left-0 right-0 h-16 border-b-4 border-black bg-white flex items-center justify-between px-4 z-40">
-        <h1 className="text-xl font-black uppercase italic tracking-tighter">JeansLoop / Admin</h1>
+        <h1 className="text-xl font-black uppercase italic tracking-tighter">{siteTitle} / Admin</h1>
         <button
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           className="p-2 border-2 border-black"
@@ -126,7 +136,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <div className="p-6 border-b-2 border-neutral-800">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-black uppercase italic tracking-tighter text-white">
-              JeansLoop
+              {siteTitle}
             </h1>
             <span
               className={`px-2 py-0.5 text-[9px] font-black uppercase tracking-wider border ${

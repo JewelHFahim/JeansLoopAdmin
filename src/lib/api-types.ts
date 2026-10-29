@@ -147,6 +147,8 @@ export interface SiteSettings {
   locationMapUrl?: string;
   businessHours?: string;
   announcement?: string;
+  announcementEnabled?: boolean;
+  announcementLink?: string;
   socialLinks?: {
     facebook?: string;
     instagram?: string;
