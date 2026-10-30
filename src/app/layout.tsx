@@ -5,6 +5,13 @@ import { Providers } from '@/components/providers';
 export const metadata: Metadata = {
   title: 'JeansLoop / Admin Terminal',
   description: 'JeansLoop Management & Operations Command Console',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.png', type: 'image/png' },
+    ],
+    apple: '/apple-touch-icon.png',
+  },
 };
 
 export default function RootLayout({
