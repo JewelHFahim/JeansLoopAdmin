@@ -213,9 +213,9 @@ export default function SiteSettingsPage() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6 max-w-6xl pb-16">
       {/* Top Header & Sticky Save Actions */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b-2 border-black pb-5">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b-2 border-black pb-3 sm:pb-4">
         <div>
-          <div className="flex items-center gap-2 mb-1.5">
+          <div className="flex items-center gap-2 mb-1">
             <span className="bg-black text-white px-2 py-0.5 text-[9px] font-black uppercase tracking-widest">
               SYSTEM CONFIGURATION
             </span>
@@ -229,7 +229,7 @@ export default function SiteSettingsPage() {
               </span>
             )}
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black uppercase italic tracking-tight text-neutral-900">
+          <h1 className="text-xl sm:text-2xl font-black uppercase italic tracking-tight text-neutral-900 leading-none">
             Store & Brand Settings
           </h1>
           <p className="text-xs text-neutral-500 font-medium mt-0.5">

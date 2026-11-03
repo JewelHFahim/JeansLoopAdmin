@@ -103,12 +103,12 @@ export default function OrdersListPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b-4 border-black pb-6 gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b-2 border-black pb-3 sm:pb-4 gap-3">
         <div>
-          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-400 block mb-1">
+          <span className="text-[9px] font-black uppercase tracking-[0.25em] text-neutral-400 block mb-0.5">
             Transaction Registry
           </span>
-          <h1 className="text-3xl md:text-5xl font-black uppercase italic tracking-tighter text-black leading-none">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-black uppercase italic tracking-tight text-black leading-none">
             Orders Console
           </h1>
         </div>

@@ -133,6 +133,8 @@ export const productsApi = {
   update: (id: string, data: Partial<Product>) =>
     apiClient.put<ApiResponse<Product>>(`/products/${id}`, data),
   delete: (id: string) => apiClient.delete<ApiResponse<null>>(`/products/${id}`),
+  getSizes: (category?: string) =>
+    apiClient.get<ApiResponse<string[]>>('/products/sizes', { params: { category } }),
 };
 
 export const ordersApi = {

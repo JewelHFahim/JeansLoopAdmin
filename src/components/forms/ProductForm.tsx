@@ -35,12 +35,12 @@ const SIZE_PRESETS = [
   {
     name: 'Tops / T-Shirts / Shirts',
     category: 'tops',
-    sizes: ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL'],
+    sizes: ['S', 'M', 'L', 'XL'],
   },
   {
     name: 'Jeans / Pants / Trousers',
     category: 'bottoms',
-    sizes: ['28', '30', '32', '34', '36', '38', '40'],
+    sizes: ['30', '32', '34', '36', '38', '40', '42', '44'],
   },
   {
     name: 'Shoes / Footwear (EU)',
@@ -473,18 +473,18 @@ export function ProductForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-8 pb-16">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b-4 border-black pb-6 gap-4">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-black pb-3 sm:pb-4 gap-3">
+        <div className="flex items-center gap-3">
           <Link href="/dashboard/products">
-            <Button type="button" variant="outline" size="icon" className="h-10 w-10">
+            <Button type="button" variant="outline" size="icon" className="h-9 w-9">
               <ArrowLeft className="h-4 w-4" />
             </Button>
           </Link>
           <div>
-            <h1 className="text-2xl md:text-3xl font-black uppercase italic tracking-tight text-black leading-none">
+            <h1 className="text-xl sm:text-2xl font-black uppercase italic tracking-tight text-black leading-none">
               {title}
             </h1>
-            <p className="text-[10px] font-black uppercase tracking-widest text-neutral-400 mt-1">
+            <p className="text-[9px] font-black uppercase tracking-widest text-neutral-400 mt-0.5">
               Inventory Nexus / Asset Configuration
             </p>
           </div>

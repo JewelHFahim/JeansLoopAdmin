@@ -104,16 +104,16 @@ export default function AdminOrderDetailsPage({ params }: { params: Promise<{ id
   return (
     <div className="space-y-8 pb-16">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b-4 border-black pb-6 gap-4">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-black pb-3 sm:pb-4 gap-3">
+        <div className="flex items-center gap-3">
           <Link href="/dashboard/orders">
-            <Button variant="outline" size="icon" className="h-10 w-10">
+            <Button variant="outline" size="icon" className="h-9 w-9">
               <ArrowLeft className="h-4 w-4" />
             </Button>
           </Link>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-2xl md:text-3xl font-black uppercase italic tracking-tight text-black leading-none">
+              <h1 className="text-xl sm:text-2xl font-black uppercase italic tracking-tight text-black leading-none">
                 Order #{order._id.slice(-6).toUpperCase()}
               </h1>
               <span className="bg-black text-white px-2 py-0.5 text-[9px] font-black uppercase">

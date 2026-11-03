@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { productsApi, categoriesApi } from '@/lib/api';
@@ -20,6 +20,7 @@ import {
   CheckCircle2,
   AlertTriangle,
   XCircle,
+  Layers,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import type { Product } from '@/lib/api-types';
@@ -29,6 +30,7 @@ export default function ProductsListPage() {
   const [page, setPage] = useState(1);
   const [keyword, setKeyword] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
+  const [sizeFilter, setSizeFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('all'); // 'all' | 'published' | 'draft'
   const [stockFilter, setStockFilter] = useState('all'); // 'all' | 'inStock' | 'lowStock' | 'outOfStock'
   const [sortOrder, setSortOrder] = useState('newest'); // 'newest' | 'price-low' | 'price-high' | 'name'
@@ -46,15 +48,56 @@ export default function ProductsListPage() {
   });
   const categories = categoriesRes?.data || [];
 
+  // Fetch sizes from database
+  const { data: sizesRes } = useQuery({
+    queryKey: ['admin-product-sizes', categoryFilter],
+    queryFn: async () => {
+      try {
+        const res = await productsApi.getSizes(categoryFilter || undefined);
+        return res.data.data;
+      } catch {
+        return [];
+      }
+    },
+  });
+  const serverSizes = sizesRes || [];
+
+  const WAIST_SIZES = ['30', '32', '34', '36', '38', '40', '42', '44'];
+  const APPAREL_SIZES = ['S', 'M', 'L', 'XL'];
+
+  const otherSizes = useMemo(() => {
+    const knownSet = new Set([
+      ...WAIST_SIZES.map((s) => s.toLowerCase()),
+      ...APPAREL_SIZES.map((s) => s.toLowerCase()),
+      '28',
+      'xs',
+      '2xl',
+      '3xl',
+      'xxl',
+      'xxxl',
+    ]);
+    return serverSizes.filter((s) => !knownSet.has(s.toLowerCase()));
+  }, [serverSizes]);
+
   // Fetch filtered products
   const { data: response, isLoading } = useQuery({
-    queryKey: ['admin-products', page, keyword, categoryFilter, statusFilter, stockFilter, sortOrder],
+    queryKey: [
+      'admin-products',
+      page,
+      keyword,
+      categoryFilter,
+      sizeFilter,
+      statusFilter,
+      stockFilter,
+      sortOrder,
+    ],
     queryFn: async () => {
       const res = await productsApi.getAll({
         page,
         limit: 10,
         keyword: keyword || undefined,
         category: categoryFilter || undefined,
+        size: sizeFilter || undefined,
         status: statusFilter !== 'all' ? statusFilter : undefined,
         includeDrafts: true,
         stockStatus: stockFilter !== 'all' ? stockFilter : undefined,
@@ -70,6 +113,7 @@ export default function ProductsListPage() {
   const hasActiveFilters = Boolean(
     keyword ||
       categoryFilter ||
+      sizeFilter ||
       statusFilter !== 'all' ||
       stockFilter !== 'all' ||
       sortOrder !== 'newest'
@@ -78,6 +122,7 @@ export default function ProductsListPage() {
   const handleResetFilters = () => {
     setKeyword('');
     setCategoryFilter('');
+    setSizeFilter('');
     setStatusFilter('all');
     setStockFilter('all');
     setSortOrder('newest');
@@ -99,12 +144,12 @@ export default function ProductsListPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b-4 border-black pb-6 gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b-2 border-black pb-3 sm:pb-4 gap-3">
         <div>
-          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-400 block mb-1">
+          <span className="text-[9px] font-black uppercase tracking-[0.25em] text-neutral-400 block mb-0.5">
             Catalog Management
           </span>
-          <h1 className="text-3xl md:text-5xl font-black uppercase italic tracking-tighter text-black leading-none">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-black uppercase italic tracking-tight text-black leading-none">
             Products Registry
           </h1>
         </div>
@@ -135,7 +180,7 @@ export default function ProductsListPage() {
         </div>
 
         {/* Filter Controls Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
           {/* Keyword Search */}
           <div className="lg:col-span-1">
             <SearchInput
@@ -164,6 +209,43 @@ export default function ProductsListPage() {
                   {c.name}
                 </option>
               ))}
+            </select>
+          </div>
+
+          {/* Size Filter Dropdown */}
+          <div>
+            <select
+              value={sizeFilter}
+              onChange={(e) => {
+                setSizeFilter(e.target.value);
+                setPage(1);
+              }}
+              className="w-full h-10 border-2 border-black bg-white px-3 text-xs font-bold uppercase outline-none cursor-pointer"
+            >
+              <option value="">All Sizes</option>
+              <optgroup label="Waist / Pants">
+                {WAIST_SIZES.map((sz) => (
+                  <option key={sz} value={sz}>
+                    Size {sz}
+                  </option>
+                ))}
+              </optgroup>
+              <optgroup label="Standard Apparel">
+                {APPAREL_SIZES.map((sz) => (
+                  <option key={sz} value={sz}>
+                    Size {sz}
+                  </option>
+                ))}
+              </optgroup>
+              {otherSizes.length > 0 && (
+                <optgroup label="Other Sizes">
+                  {otherSizes.map((sz) => (
+                    <option key={sz} value={sz}>
+                      Size {sz}
+                    </option>
+                  ))}
+                </optgroup>
+              )}
             </select>
           </div>
 
@@ -216,6 +298,59 @@ export default function ProductsListPage() {
               <option value="name">Name: A to Z</option>
             </select>
           </div>
+        </div>
+
+        {/* Quick Size Chips Toolbar */}
+        <div className="pt-2 border-t border-black/10 flex flex-wrap items-center gap-1.5">
+          <span className="text-[10px] font-black uppercase tracking-wider text-neutral-500 mr-1 flex items-center gap-1">
+            <Layers className="w-3 h-3 text-black" /> Quick Size:
+          </span>
+          <button
+            type="button"
+            onClick={() => {
+              setSizeFilter('');
+              setPage(1);
+            }}
+            className={`h-6 px-2 text-[10px] font-black uppercase transition-all border ${
+              !sizeFilter
+                ? 'bg-black text-white border-black'
+                : 'bg-white text-neutral-600 border-neutral-300 hover:border-black hover:bg-neutral-50'
+            }`}
+          >
+            All
+          </button>
+          {[...WAIST_SIZES, ...APPAREL_SIZES, ...otherSizes].map((sz) => {
+            const isSelected = sizeFilter.toLowerCase() === sz.toLowerCase();
+            return (
+              <button
+                key={sz}
+                type="button"
+                onClick={() => {
+                  setSizeFilter(isSelected ? '' : sz);
+                  setPage(1);
+                }}
+                className={`h-6 min-w-[28px] px-2 text-[10px] font-black uppercase transition-all border ${
+                  isSelected
+                    ? 'bg-black text-white border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]'
+                    : 'bg-white text-black border-neutral-300 hover:border-black hover:bg-neutral-50'
+                }`}
+              >
+                {sz}
+              </button>
+            );
+          })}
+          {sizeFilter && (
+            <button
+              type="button"
+              onClick={() => {
+                setSizeFilter('');
+                setPage(1);
+              }}
+              className="text-[10px] font-bold text-red-600 hover:underline ml-2 uppercase"
+            >
+              Clear size (Size: {sizeFilter})
+            </button>
+          )}
         </div>
       </div>
 
@@ -276,12 +411,43 @@ export default function ProductsListPage() {
                       )}
                     </td>
 
-                    {/* Stock */}
+                    {/* Stock & Sizes */}
                     <td className="p-4 border-r border-neutral-200">
-                      <p className="text-[11px] font-mono">
-                        {p.variants?.map((v) => `${v.size}(${v.stock})`).join(', ')}
-                      </p>
-                      <div className="flex items-center gap-1.5 mt-1">
+                      <div className="flex flex-wrap gap-1 mb-1.5 max-w-xs">
+                        {p.variants?.map((v, idx) => {
+                          const isMatch =
+                            sizeFilter &&
+                            v.size.toLowerCase() === sizeFilter.toLowerCase();
+                          return (
+                            <button
+                              key={idx}
+                              type="button"
+                              onClick={() => {
+                                setSizeFilter(v.size);
+                                setPage(1);
+                              }}
+                              title={`Filter by size ${v.size} (Stock: ${v.stock})`}
+                              className={`inline-flex items-center gap-1 text-[10px] font-mono px-1.5 py-0.5 border transition-all ${
+                                isMatch
+                                  ? 'bg-black text-white border-black font-black shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]'
+                                  : v.stock === 0
+                                  ? 'bg-neutral-100 text-neutral-400 border-neutral-200 line-through'
+                                  : 'bg-white text-neutral-800 border-neutral-300 hover:border-black hover:bg-neutral-50'
+                              }`}
+                            >
+                              <span>{v.size}</span>
+                              <span
+                                className={`text-[9px] ${
+                                  isMatch ? 'text-neutral-300' : 'text-neutral-500'
+                                }`}
+                              >
+                                ({v.stock})
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                      <div className="flex items-center gap-1.5">
                         <span
                           className={`inline-flex items-center gap-1 text-[9px] font-black uppercase px-1.5 py-0.2 border ${
                             isOutOfStock
