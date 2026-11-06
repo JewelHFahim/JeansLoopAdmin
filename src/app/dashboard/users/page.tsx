@@ -388,7 +388,7 @@ export default function UsersDirectoryPage() {
                   <Input
                     id="staff-email"
                     type="email"
-                    placeholder="staff@jeansloop.com"
+                    placeholder="staff@thefirecutter.store"
                     value={newStaff.email}
                     onChange={(e) => setNewStaff({ ...newStaff, email: e.target.value })}
                     required

@@ -117,15 +117,15 @@ export default function InvoicePage({ params }: { params: Promise<{ id: string }
         <div className="flex justify-between items-start border-b border-neutral-200 pb-6">
           <div>
             <h1 className="text-2xl font-black uppercase tracking-tight text-neutral-950">
-              {settings?.title || 'JeansLoop'}
+              {settings?.title || 'Fire Cutter'}
             </h1>
             <p className="text-xs text-neutral-500 mt-1">
-              {settings?.tagline || 'Premium Denim & Apparel'}
+              {settings?.tagline || 'Export Mens clothing'}
             </p>
             <div className="text-xs text-neutral-500 mt-2 space-y-0.5">
               {settings?.address && <p>{settings.address}</p>}
               <p>
-                {settings?.phone || '+880 1700-000000'} • {settings?.email || 'support@jeansloop.com'}
+                {settings?.phone || '+8801911209322'} • {settings?.email || 'thefirecutter@gmail.com'}
               </p>
             </div>
           </div>
@@ -257,9 +257,9 @@ export default function InvoicePage({ params }: { params: Promise<{ id: string }
 
         {/* Footer */}
         <div className="border-t border-neutral-200 pt-6 text-center text-xs text-neutral-500">
-          <p>Thank you for shopping with {settings?.title || 'JeansLoop'}!</p>
+          <p>Thank you for shopping with {settings?.title || 'Fire Cutter'}!</p>
           <p className="text-[10px] text-neutral-400 mt-1">
-            For support or size exchanges, contact us at {settings?.email || 'support@jeansloop.com'} or {settings?.phone || '+880 1700-000000'}.
+            For support or size exchanges, contact us at {settings?.email || 'thefirecutter@gmail.com'} or {settings?.phone || '+8801911209322'}.
           </p>
         </div>
       </div>

@@ -36,7 +36,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       return res.data.data;
     },
   });
-  const siteTitle = settingsRes?.title || 'JeansLoop';
+  const siteTitle = settingsRes?.title || 'Fire Cutter';
+
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.title = `${siteTitle} / Admin Panel`;
+    }
+  }, [siteTitle]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');

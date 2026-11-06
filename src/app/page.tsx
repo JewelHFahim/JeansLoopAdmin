@@ -58,7 +58,7 @@ export default function AdminLoginPage() {
             </span>
           </div>
           <h1 className="text-3xl font-black uppercase italic tracking-tight text-black leading-none">
-            JeansLoop / Admin
+            Fire Cutter / Admin
           </h1>
         </div>
 
@@ -69,7 +69,7 @@ export default function AdminLoginPage() {
               id="email"
               type="email"
               autoComplete="username"
-              placeholder="admin@jeansloop.com"
+              placeholder="admin@thefirecutter.store"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required

@@ -3,8 +3,8 @@ import './globals.css';
 import { Providers } from '@/components/providers';
 
 export const metadata: Metadata = {
-  title: 'JeansLoop / Admin Terminal',
-  description: 'JeansLoop Management & Operations Command Console',
+  title: 'Fire Cutter / Admin Panel',
+  description: 'Fire Cutter Management & Operations Command Console',
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
