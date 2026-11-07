@@ -139,7 +139,7 @@ export default function SlidersManagementPage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b-2 border-black pb-3 sm:pb-4 gap-3">
         <div>
@@ -152,7 +152,7 @@ export default function SlidersManagementPage() {
         </div>
 
         {!isCreating && !editingSlider && (
-          <Button size="sm" onClick={handleStartCreate} className="gap-2">
+          <Button size="sm" onClick={handleStartCreate} className="w-full sm:w-auto gap-2">
             <Plus className="h-4 w-4" /> Add Slide
           </Button>
         )}
@@ -162,7 +162,7 @@ export default function SlidersManagementPage() {
       {(isCreating || editingSlider) && (
         <form
           onSubmit={handleSave}
-          className="border-2 border-black p-6 bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4 animate-in fade-in"
+          className="border-2 border-black p-4 sm:p-6 bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4 animate-in fade-in"
         >
           <div className="flex justify-between items-center border-b-2 border-black pb-2">
             <h2 className="text-sm font-black uppercase tracking-widest">
@@ -242,8 +242,8 @@ export default function SlidersManagementPage() {
           {/* Banner Image */}
           <div className="space-y-2 border-t-2 border-neutral-100 pt-4">
             <Label>Slide Banner Image (1920x800 recommended) *</Label>
-            <div className="flex items-center gap-4">
-              <label className="border-2 border-dashed border-black px-4 py-2 cursor-pointer hover:bg-neutral-50 text-xs font-black uppercase flex items-center gap-2">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
+              <label className="border-2 border-dashed border-black px-4 py-2 cursor-pointer hover:bg-neutral-50 text-xs font-black uppercase flex items-center gap-2 shrink-0">
                 {uploading ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
                 ) : (
@@ -259,7 +259,7 @@ export default function SlidersManagementPage() {
                 />
               </label>
               {form.image && (
-                <div className="relative w-32 h-16 border-2 border-black overflow-hidden bg-neutral-100">
+                <div className="relative w-full sm:w-32 h-20 sm:h-16 border-2 border-black overflow-hidden bg-neutral-100">
                   <Image src={form.image} alt="Slide Preview" fill sizes="128px" className="object-cover" />
                 </div>
               )}
@@ -286,33 +286,33 @@ export default function SlidersManagementPage() {
       )}
 
       {/* Grid of Sliders */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
         {sliders.map((s) => (
           <div
             key={s._id}
-            className="border-2 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden"
+            className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden"
           >
-            <div className="relative h-48 w-full bg-neutral-100 border-b-2 border-black">
+            <div className="relative h-40 sm:h-48 w-full bg-neutral-100 border-b-2 border-black">
               {s.image && <Image src={s.image} alt={s.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />}
               <div className="absolute top-2 left-2 bg-black text-white px-2 py-0.5 text-[9px] font-black uppercase">
                 Order #{s.order} — {s.isActive ? 'Active' : 'Inactive'}
               </div>
             </div>
 
-            <div className="p-4 flex justify-between items-end">
-              <div>
-                <h3 className="text-base font-black uppercase tracking-tight text-black">{s.title}</h3>
+            <div className="p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+              <div className="min-w-0">
+                <h3 className="text-base font-black uppercase tracking-tight text-black truncate">{s.title}</h3>
                 {s.subtitle && (
                   <p className="text-xs text-neutral-500 font-medium line-clamp-1">{s.subtitle}</p>
                 )}
                 {s.primaryCta && (
-                  <p className="text-[10px] font-mono text-neutral-400 mt-1">
+                  <p className="text-[10px] font-mono text-neutral-400 mt-1 truncate">
                     CTA: {s.primaryCta.text} → {s.primaryCta.href}
                   </p>
                 )}
               </div>
 
-              <div className="flex gap-2">
+              <div className="flex items-center gap-2 self-end sm:self-auto shrink-0">
                 <Button variant="outline" size="icon" onClick={() => handleStartEdit(s)} className="h-8 w-8">
                   <Edit2 className="h-3.5 w-3.5" />
                 </Button>

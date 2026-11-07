@@ -64,6 +64,22 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     setIsSidebarOpen(false);
   }, [pathname]);
 
+  // Lock body scroll when mobile drawer is open
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      if (isSidebarOpen) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = '';
+      }
+    }
+    return () => {
+      if (typeof document !== 'undefined') {
+        document.body.style.overflow = '';
+      }
+    };
+  }, [isSidebarOpen]);
+
   const handleLogout = async () => {
     try {
       await authApi.logout();
@@ -122,42 +138,83 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="flex h-screen bg-white overflow-hidden print:h-auto print:overflow-visible">
-      {/* Mobile Header */}
-      <div className="lg:hidden print:hidden fixed top-0 left-0 right-0 h-16 border-b-4 border-black bg-white flex items-center justify-between px-4 z-40">
-        <h1 className="text-xl font-black uppercase italic tracking-tighter">{siteTitle} / Admin</h1>
-        <button
-          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className="p-2 border-2 border-black"
-        >
-          {isSidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
-      </div>
+      {/* Mobile Top Header */}
+      <header className="lg:hidden print:hidden fixed top-0 left-0 right-0 h-14 sm:h-16 border-b-2 sm:border-b-4 border-black bg-white flex items-center justify-between px-3 sm:px-4 z-40 shadow-xs">
+        <div className="flex items-center gap-2 min-w-0">
+          <Link href="/dashboard" className="flex items-center gap-1.5 truncate">
+            <span className="text-base sm:text-lg font-black uppercase italic tracking-tighter truncate">
+              {siteTitle}
+            </span>
+            <span className="text-[10px] sm:text-xs font-mono font-bold text-neutral-400">/</span>
+            <span className="text-[10px] sm:text-xs font-black uppercase tracking-wider text-neutral-600 truncate">
+              {currentLink?.label || 'Admin'}
+            </span>
+          </Link>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <a
+            href={storefrontUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-2 border-2 border-black bg-white hover:bg-neutral-100 text-black transition-colors"
+            title="View Storefront"
+          >
+            <ExternalLink className="h-4 w-4" />
+          </a>
+          <button
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            className="p-2 border-2 border-black bg-black text-white hover:bg-neutral-800 transition-colors"
+            aria-label={isSidebarOpen ? 'Close Navigation Drawer' : 'Open Navigation Drawer'}
+          >
+            {isSidebarOpen ? <X className="h-4 w-4 sm:h-5 sm:w-5" /> : <Menu className="h-4 w-4 sm:h-5 sm:w-5" />}
+          </button>
+        </div>
+      </header>
+
+      {/* Mobile Backdrop Overlay */}
+      {isSidebarOpen && (
+        <div
+          onClick={() => setIsSidebarOpen(false)}
+          className="fixed inset-0 bg-black/60 backdrop-blur-xs z-40 lg:hidden transition-opacity"
+          aria-hidden="true"
+        />
+      )}
 
       {/* Sidebar */}
       <aside
-        className={`print:hidden fixed inset-y-0 left-0 z-50 w-64 bg-black text-white border-r-4 border-black flex flex-col transition-transform duration-300 lg:relative lg:translate-x-0 ${
-          isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        className={`print:hidden fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] bg-black text-white border-r-4 border-black flex flex-col transition-transform duration-300 ease-in-out lg:w-64 lg:relative lg:translate-x-0 ${
+          isSidebarOpen ? 'translate-x-0 shadow-[8px_0px_0px_0px_rgba(0,0,0,0.5)]' : '-translate-x-full'
         }`}
       >
-        <div className="p-6 border-b-2 border-neutral-800">
+        <div className="p-4 sm:p-6 border-b-2 border-neutral-800">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-black uppercase italic tracking-tighter text-white">
+            <h1 className="text-xl sm:text-2xl font-black uppercase italic tracking-tighter text-white truncate mr-2">
               {siteTitle}
             </h1>
-            <span
-              className={`px-2 py-0.5 text-[9px] font-black uppercase tracking-wider border ${
-                isAdmin
-                  ? 'bg-white text-black border-white'
-                  : 'bg-neutral-800 text-neutral-300 border-neutral-700'
-              }`}
-            >
-              {isAdmin ? 'ADMIN' : 'STAFF'}
-            </span>
+            <div className="flex items-center gap-2">
+              <span
+                className={`px-2 py-0.5 text-[9px] font-black uppercase tracking-wider border shrink-0 ${
+                  isAdmin
+                    ? 'bg-white text-black border-white'
+                    : 'bg-neutral-800 text-neutral-300 border-neutral-700'
+                }`}
+              >
+                {isAdmin ? 'ADMIN' : 'STAFF'}
+              </span>
+              <button
+                onClick={() => setIsSidebarOpen(false)}
+                className="lg:hidden p-1.5 border border-neutral-700 text-neutral-400 hover:text-white hover:border-white transition-colors"
+                aria-label="Close menu"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
           </div>
           <p className="text-[10px] font-mono text-neutral-400 truncate mt-1.5">{user.email}</p>
         </div>
 
-        <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+        <nav className="flex-1 p-3 sm:p-4 space-y-1 overflow-y-auto">
           {navLinks.map((link) => {
             const Icon = link.icon;
             const isActive = pathname === link.href || (link.href !== '/dashboard' && pathname.startsWith(link.href));
@@ -166,24 +223,25 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <Link
                 key={link.href}
                 href={link.href}
-                className={`flex items-center gap-3 px-4 py-3 text-xs font-black uppercase tracking-wider transition-colors border-2 ${
+                onClick={() => setIsSidebarOpen(false)}
+                className={`flex items-center gap-3 px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs font-black uppercase tracking-wider transition-colors border-2 ${
                   isActive
                     ? 'border-white bg-white text-black shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)]'
                     : 'border-transparent text-neutral-400 hover:text-white hover:bg-neutral-900'
                 }`}
               >
-                <Icon className="h-4 w-4" /> {link.label}
+                <Icon className="h-4 w-4 shrink-0" /> <span className="truncate">{link.label}</span>
               </Link>
             );
           })}
         </nav>
 
-        <div className="p-4 border-t-2 border-neutral-800 space-y-2">
+        <div className="p-3 sm:p-4 border-t-2 border-neutral-800 space-y-2">
           <a
             href={storefrontUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-between px-4 py-2 text-[10px] font-black uppercase tracking-wider text-neutral-400 hover:text-white"
+            className="flex items-center justify-between px-3 sm:px-4 py-2 text-[10px] font-black uppercase tracking-wider text-neutral-400 hover:text-white transition-colors"
           >
             <span>View Storefront</span>
             <ExternalLink className="h-3.5 w-3.5" />
@@ -201,10 +259,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 overflow-y-auto pt-16 lg:pt-0 p-6 md:p-10 bg-neutral-50 print:p-0 print:m-0 print:bg-white print:overflow-visible">
+      <main className="flex-1 overflow-y-auto pt-14 sm:pt-16 lg:pt-0 p-3 sm:p-6 md:p-8 pb-20 lg:pb-8 bg-neutral-50 print:p-0 print:m-0 print:bg-white print:overflow-visible">
         <div className="max-w-7xl mx-auto print:max-w-none print:w-full">
           {isAccessDenied ? (
-            <div className="min-h-[50vh] flex flex-col items-center justify-center text-center p-8 border-2 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] max-w-lg mx-auto my-12">
+            <div className="min-h-[50vh] flex flex-col items-center justify-center text-center p-6 sm:p-8 border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] max-w-lg mx-auto my-8 sm:my-12">
               <ShieldAlert className="w-12 h-12 text-red-600 mb-3" />
               <h2 className="text-xl font-black uppercase italic tracking-tight">Access Restricted</h2>
               <p className="text-xs text-neutral-600 mt-2">
@@ -225,6 +283,48 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           )}
         </div>
       </main>
+
+      {/* Mobile Bottom Quick-Action Bar */}
+      <nav className="lg:hidden print:hidden fixed bottom-0 left-0 right-0 h-14 bg-white border-t-2 border-black flex items-center justify-around px-1 z-30 shadow-[0_-2px_6px_rgba(0,0,0,0.06)]">
+        <Link
+          href="/dashboard"
+          className={`flex flex-col items-center justify-center flex-1 h-full py-1 text-[9px] font-black uppercase tracking-wider transition-colors ${
+            pathname === '/dashboard' ? 'text-black font-black' : 'text-neutral-500 hover:text-black'
+          }`}
+        >
+          <LayoutDashboard className={`h-4 w-4 ${pathname === '/dashboard' ? 'stroke-[2.5]' : ''}`} />
+          <span className="mt-0.5">Console</span>
+        </Link>
+
+        <Link
+          href="/dashboard/products"
+          className={`flex flex-col items-center justify-center flex-1 h-full py-1 text-[9px] font-black uppercase tracking-wider transition-colors ${
+            pathname.startsWith('/dashboard/products') ? 'text-black font-black' : 'text-neutral-500 hover:text-black'
+          }`}
+        >
+          <Package className={`h-4 w-4 ${pathname.startsWith('/dashboard/products') ? 'stroke-[2.5]' : ''}`} />
+          <span className="mt-0.5">Catalog</span>
+        </Link>
+
+        <Link
+          href="/dashboard/orders"
+          className={`flex flex-col items-center justify-center flex-1 h-full py-1 text-[9px] font-black uppercase tracking-wider transition-colors ${
+            pathname.startsWith('/dashboard/orders') ? 'text-black font-black' : 'text-neutral-500 hover:text-black'
+          }`}
+        >
+          <ShoppingCart className={`h-4 w-4 ${pathname.startsWith('/dashboard/orders') ? 'stroke-[2.5]' : ''}`} />
+          <span className="mt-0.5">Orders</span>
+        </Link>
+
+        <button
+          type="button"
+          onClick={() => setIsSidebarOpen(true)}
+          className="flex flex-col items-center justify-center flex-1 h-full py-1 text-[9px] font-black uppercase tracking-wider text-neutral-500 hover:text-black transition-colors"
+        >
+          <Menu className="h-4 w-4" />
+          <span className="mt-0.5">Menu</span>
+        </button>
+      </nav>
     </div>
   );
 }

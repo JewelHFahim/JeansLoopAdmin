@@ -115,14 +115,14 @@ export default function OrdersListPage() {
       </div>
 
       {/* Status Quick Filter Tabs */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+      <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1.5 -mx-1 px-1">
         <button
           type="button"
           onClick={() => {
             setStatusFilter('');
             setPage(1);
           }}
-          className={`px-3 py-1.5 text-[10px] font-black uppercase tracking-wider border-2 border-black transition-all whitespace-nowrap shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${
+          className={`px-2.5 sm:px-3 py-1.5 text-[9px] sm:text-[10px] font-black uppercase tracking-wider border-2 border-black transition-all whitespace-nowrap shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${
             statusFilter === '' ? 'bg-black text-white' : 'bg-white text-black hover:bg-neutral-100'
           }`}
         >
@@ -136,7 +136,7 @@ export default function OrdersListPage() {
               setStatusFilter(st);
               setPage(1);
             }}
-            className={`px-3 py-1.5 text-[10px] font-black uppercase tracking-wider border-2 border-black transition-all whitespace-nowrap shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${
+            className={`px-2.5 sm:px-3 py-1.5 text-[9px] sm:text-[10px] font-black uppercase tracking-wider border-2 border-black transition-all whitespace-nowrap shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${
               statusFilter === st ? 'bg-black text-white' : 'bg-white text-black hover:bg-neutral-100'
             }`}
           >
@@ -146,7 +146,7 @@ export default function OrdersListPage() {
       </div>
 
       {/* Comprehensive Filter Toolbar */}
-      <div className="border-2 border-black bg-white p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] space-y-3">
+      <div className="border-2 border-black bg-white p-3 sm:p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] space-y-3">
         <div className="flex items-center justify-between border-b border-black/15 pb-2.5">
           <div className="flex items-center gap-2">
             <Filter className="w-3.5 h-3.5 text-black" />
@@ -164,7 +164,7 @@ export default function OrdersListPage() {
         </div>
 
         {/* Filter Controls Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5 sm:gap-3">
           {/* Keyword Search */}
           <div className="lg:col-span-1">
             <SearchInput
@@ -246,9 +246,14 @@ export default function OrdersListPage() {
         </div>
       </div>
 
-      {/* Table */}
-      <div className="border-2 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-x-auto">
-        <table className="w-full text-xs text-left border-collapse">
+      {/* Table with mobile horizontal scroll indicator */}
+      <div className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
+        <div className="lg:hidden flex items-center justify-between px-3 py-1.5 bg-neutral-100 border-b border-black text-[9px] font-bold text-neutral-500 uppercase tracking-wider">
+          <span>Orders Table</span>
+          <span>Scroll horizontally for details →</span>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[760px] text-xs text-left border-collapse">
           <thead>
             <tr className="bg-black text-white uppercase text-[10px] font-black tracking-wider">
               <th className="p-4 border-r border-neutral-700">Order ID & Date</th>
@@ -369,20 +374,22 @@ export default function OrdersListPage() {
             )}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Pagination */}
       {pagination && pagination.pages > 1 && (
-        <div className="flex justify-between items-center pt-4">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-3 pt-4 text-center sm:text-left">
           <p className="text-xs font-bold uppercase text-neutral-500">
             Total {pagination.total} orders recorded
           </p>
-          <div className="flex gap-2">
+          <div className="flex gap-2 w-full sm:w-auto">
             <Button
               variant="outline"
               size="sm"
               disabled={page <= 1}
               onClick={() => setPage((p) => p - 1)}
+              className="flex-1 sm:flex-initial"
             >
               Previous
             </Button>
@@ -391,6 +398,7 @@ export default function OrdersListPage() {
               size="sm"
               disabled={page >= pagination.pages}
               onClick={() => setPage((p) => p + 1)}
+              className="flex-1 sm:flex-initial"
             >
               Next
             </Button>

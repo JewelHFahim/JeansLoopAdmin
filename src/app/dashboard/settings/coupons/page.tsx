@@ -104,7 +104,7 @@ export default function CouponsSettingsPage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b-2 border-black pb-3 sm:pb-4 gap-3">
         <div>
@@ -117,7 +117,7 @@ export default function CouponsSettingsPage() {
         </div>
 
         {!isCreating && !editingCoupon && (
-          <Button size="sm" onClick={handleStartCreate} className="gap-2">
+          <Button size="sm" onClick={handleStartCreate} className="w-full sm:w-auto gap-2">
             <Plus className="h-4 w-4" /> Create Coupon
           </Button>
         )}
@@ -127,7 +127,7 @@ export default function CouponsSettingsPage() {
       {(isCreating || editingCoupon) && (
         <form
           onSubmit={handleSave}
-          className="border-2 border-black p-6 bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4 animate-in fade-in"
+          className="border-2 border-black p-4 sm:p-6 bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4 animate-in fade-in"
         >
           <div className="flex justify-between items-center border-b-2 border-black pb-2">
             <h2 className="text-sm font-black uppercase tracking-widest">
@@ -230,9 +230,14 @@ export default function CouponsSettingsPage() {
         </form>
       )}
 
-      {/* Table */}
-      <div className="border-2 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-x-auto">
-        <table className="w-full text-xs text-left border-collapse">
+      {/* Table with mobile horizontal scroll indicator */}
+      <div className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
+        <div className="lg:hidden flex items-center justify-between px-3 py-1.5 bg-neutral-100 border-b border-black text-[9px] font-bold text-neutral-500 uppercase tracking-wider">
+          <span>Coupon Registry</span>
+          <span>Scroll horizontally for details →</span>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[620px] text-xs text-left border-collapse">
           <thead>
             <tr className="bg-black text-white uppercase text-[10px] font-black tracking-wider">
               <th className="p-4 border-r border-neutral-700">Code</th>
@@ -312,6 +317,7 @@ export default function CouponsSettingsPage() {
             )}
           </tbody>
         </table>
+        </div>
       </div>
 
       <ConfirmDialog

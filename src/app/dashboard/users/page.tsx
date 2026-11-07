@@ -164,7 +164,7 @@ export default function UsersDirectoryPage() {
 
         <Button
           onClick={() => setIsAddStaffOpen(true)}
-          className="gap-2 bg-black hover:bg-neutral-800 text-white font-black uppercase text-xs tracking-wider"
+          className="w-full sm:w-auto gap-2 bg-black hover:bg-neutral-800 text-white font-black uppercase text-xs tracking-wider"
         >
           <UserPlus className="h-4 w-4" /> Add Staff / Manager
         </Button>
@@ -182,9 +182,14 @@ export default function UsersDirectoryPage() {
         />
       </div>
 
-      {/* Table */}
-      <div className="border-2 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-x-auto">
-        <table className="w-full text-xs text-left border-collapse">
+      {/* Table with mobile horizontal scroll indicator */}
+      <div className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
+        <div className="lg:hidden flex items-center justify-between px-3 py-1.5 bg-neutral-100 border-b border-black text-[9px] font-bold text-neutral-500 uppercase tracking-wider">
+          <span>Personnel Directory</span>
+          <span>Scroll horizontally for details →</span>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[740px] text-xs text-left border-collapse">
           <thead>
             <tr className="bg-black text-white uppercase text-[10px] font-black tracking-wider">
               <th className="p-4 border-r border-neutral-700">User Identity</th>
@@ -316,20 +321,22 @@ export default function UsersDirectoryPage() {
             )}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Pagination */}
       {pagination && pagination.pages > 1 && (
-        <div className="flex justify-between items-center pt-4">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-3 pt-4 text-center sm:text-left">
           <p className="text-xs font-bold uppercase text-neutral-500">
             Total {pagination.total} registered personnel
           </p>
-          <div className="flex gap-2">
+          <div className="flex gap-2 w-full sm:w-auto">
             <Button
               variant="outline"
               size="sm"
               disabled={page <= 1}
               onClick={() => setPage((p) => p - 1)}
+              className="flex-1 sm:flex-initial"
             >
               Previous
             </Button>
@@ -338,6 +345,7 @@ export default function UsersDirectoryPage() {
               size="sm"
               disabled={page >= pagination.pages}
               onClick={() => setPage((p) => p + 1)}
+              className="flex-1 sm:flex-initial"
             >
               Next
             </Button>
@@ -347,8 +355,8 @@ export default function UsersDirectoryPage() {
 
       {/* Modal 1: Create Staff Member */}
       {isAddStaffOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto animate-in fade-in">
-          <div className="w-full max-w-xl bg-white border-4 border-black p-6 md:p-8 shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] space-y-6 my-8">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-3 sm:p-4 overflow-y-auto animate-in fade-in">
+          <div className="w-full max-w-xl bg-white border-2 sm:border-4 border-black p-4 sm:p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] sm:shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] space-y-4 sm:space-y-6 my-4 sm:my-8 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b-2 border-black pb-4">
               <div className="flex items-center gap-2">
                 <UserPlus className="h-5 w-5 text-black" />
@@ -526,14 +534,14 @@ export default function UsersDirectoryPage() {
 
       {/* Modal 2: Edit Access Control */}
       {editingUser && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto animate-in fade-in">
-          <div className="w-full max-w-xl bg-white border-4 border-black p-6 md:p-8 shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] space-y-6 my-8">
-            <div className="flex items-center justify-between border-b-2 border-black pb-4">
-              <div>
-                <h2 className="text-xl font-black uppercase italic tracking-tight">
-                  Access Control: {editingUser.name}
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-3 sm:p-4 overflow-y-auto animate-in fade-in">
+          <div className="w-full max-w-xl bg-white border-2 sm:border-4 border-black p-4 sm:p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] sm:shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] space-y-4 sm:space-y-6 my-4 sm:my-8 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b-2 border-black pb-3 sm:pb-4 gap-2">
+              <div className="min-w-0">
+                <h2 className="text-lg sm:text-xl font-black uppercase italic tracking-tight truncate">
+                  Access: {editingUser.name}
                 </h2>
-                <p className="text-[11px] font-mono text-neutral-400 mt-0.5">{editingUser.email}</p>
+                <p className="text-[10px] sm:text-[11px] font-mono text-neutral-400 mt-0.5 truncate">{editingUser.email}</p>
               </div>
               <button
                 onClick={() => setEditingUser(null)}

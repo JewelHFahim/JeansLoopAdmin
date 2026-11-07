@@ -96,27 +96,27 @@ export default function InvoicePage({ params }: { params: Promise<{ id: string }
       `}</style>
 
       {/* Screen Action Bar (Hidden on print) */}
-      <div className="no-print max-w-3xl mx-auto mb-6 flex items-center justify-between">
-        <Link href={`/dashboard/orders/${order._id}`}>
-          <Button variant="outline" size="sm" className="gap-2 text-xs">
+      <div className="no-print max-w-3xl mx-auto mb-4 sm:mb-6 flex flex-wrap items-center justify-between gap-2 sm:gap-3">
+        <Link href={`/dashboard/orders/${order._id}`} className="flex-1 sm:flex-initial">
+          <Button variant="outline" size="sm" className="w-full sm:w-auto gap-2 text-xs">
             <ArrowLeft className="h-4 w-4" /> Back to Order
           </Button>
         </Link>
         <Button
           onClick={() => window.print()}
           size="sm"
-          className="gap-2 text-xs bg-black text-white hover:bg-neutral-800"
+          className="flex-1 sm:flex-initial gap-2 text-xs bg-black text-white hover:bg-neutral-800"
         >
           <Printer className="h-4 w-4" /> Print Invoice
         </Button>
       </div>
 
       {/* Printable Invoice Sheet */}
-      <div className="invoice-sheet max-w-3xl mx-auto bg-white border border-neutral-200 p-8 sm:p-12 shadow-sm text-neutral-800 space-y-8">
+      <div className="invoice-sheet max-w-3xl mx-auto bg-white border border-neutral-200 p-4 sm:p-8 md:p-12 shadow-sm text-neutral-800 space-y-6 sm:space-y-8">
         {/* Header */}
-        <div className="flex justify-between items-start border-b border-neutral-200 pb-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start gap-4 border-b border-neutral-200 pb-4 sm:pb-6">
           <div>
-            <h1 className="text-2xl font-black uppercase tracking-tight text-neutral-950">
+            <h1 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-neutral-950">
               {settings?.title || 'Fire Cutter'}
             </h1>
             <p className="text-xs text-neutral-500 mt-1">
@@ -130,8 +130,8 @@ export default function InvoicePage({ params }: { params: Promise<{ id: string }
             </div>
           </div>
 
-          <div className="text-right">
-            <h2 className="text-lg font-bold uppercase tracking-wider text-neutral-900">Invoice</h2>
+          <div className="text-left sm:text-right">
+            <h2 className="text-base sm:text-lg font-bold uppercase tracking-wider text-neutral-900">Invoice</h2>
             <p className="text-xs font-mono font-medium text-neutral-600 mt-1">{invoiceNumber}</p>
             <p className="text-xs text-neutral-500 mt-0.5">Date: {formattedDate}</p>
             <p className="text-xs font-semibold text-neutral-800 mt-1">
@@ -141,7 +141,7 @@ export default function InvoicePage({ params }: { params: Promise<{ id: string }
         </div>
 
         {/* Customer & Order Info */}
-        <div className="grid grid-cols-2 gap-8 text-xs">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8 text-xs">
           <div>
             <p className="font-semibold text-neutral-400 uppercase tracking-wider text-[10px] mb-1.5">
               Billed To
@@ -166,7 +166,7 @@ export default function InvoicePage({ params }: { params: Promise<{ id: string }
             )}
           </div>
 
-          <div className="text-right">
+          <div className="text-left sm:text-right">
             <p className="font-semibold text-neutral-400 uppercase tracking-wider text-[10px] mb-1.5">
               Order Details
             </p>
@@ -186,8 +186,8 @@ export default function InvoicePage({ params }: { params: Promise<{ id: string }
         </div>
 
         {/* Items Table */}
-        <div>
-          <table className="w-full text-left text-xs">
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[480px] text-left text-xs">
             <thead>
               <tr className="border-b border-neutral-300 text-neutral-500 font-semibold uppercase text-[10px] tracking-wider">
                 <th className="py-2.5">Item</th>

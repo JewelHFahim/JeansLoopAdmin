@@ -15,7 +15,6 @@ import {
   Loader2,
   Save,
   ArrowLeft,
-  Sparkles,
   RefreshCw,
   Layers,
 } from 'lucide-react';
@@ -471,26 +470,26 @@ export function ProductForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 pb-16">
+    <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8 pb-16">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-black pb-3 sm:pb-4 gap-3">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 sm:gap-3">
           <Link href="/dashboard/products">
-            <Button type="button" variant="outline" size="icon" className="h-9 w-9">
+            <Button type="button" variant="outline" size="icon" className="h-8 w-8 sm:h-9 sm:w-9 shrink-0">
               <ArrowLeft className="h-4 w-4" />
             </Button>
           </Link>
-          <div>
-            <h1 className="text-xl sm:text-2xl font-black uppercase italic tracking-tight text-black leading-none">
+          <div className="min-w-0">
+            <h1 className="text-lg sm:text-2xl font-black uppercase italic tracking-tight text-black leading-none truncate">
               {title}
             </h1>
-            <p className="text-[9px] font-black uppercase tracking-widest text-neutral-400 mt-0.5">
+            <p className="text-[9px] font-black uppercase tracking-widest text-neutral-400 mt-0.5 truncate">
               Inventory Nexus / Asset Configuration
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto">
           <label className="flex items-center gap-2 cursor-pointer text-xs font-black uppercase">
             <input
               type="checkbox"
@@ -501,7 +500,7 @@ export function ProductForm({
             <span>Draft Mode</span>
           </label>
 
-          <Button type="submit" disabled={isSubmitting} className="min-w-[140px]">
+          <Button type="submit" disabled={isSubmitting} className="min-w-[130px] sm:min-w-[140px]">
             {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...
@@ -515,11 +514,11 @@ export function ProductForm({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
         {/* Left 2 Cols: Main Info */}
-        <div className="lg:col-span-2 space-y-8">
+        <div className="lg:col-span-2 space-y-6 sm:space-y-8">
           {/* General Information */}
-          <div className="border-2 border-black p-6 bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4">
+          <div className="border-2 border-black p-4 sm:p-6 bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4">
             <h2 className="text-sm font-black uppercase tracking-widest border-b-2 border-black pb-2">
               Primary Specifications
             </h2>
@@ -602,12 +601,12 @@ export function ProductForm({
           </div>
 
           {/* Pricing & Discounts */}
-          <div className="border-2 border-black p-6 bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4">
-            <h2 className="text-sm font-black uppercase tracking-widest border-b-2 border-black pb-2">
+          <div className="border-2 border-black p-4 sm:p-6 bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4">
+            <h2 className="text-xs sm:text-sm font-black uppercase tracking-widest border-b-2 border-black pb-2">
               Pricing Configuration (BDT)
             </h2>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
               <div className="space-y-1.5">
                 <Label htmlFor="price">Base Price (৳) *</Label>
                 <Input
@@ -657,12 +656,12 @@ export function ProductForm({
           </div>
 
           {/* ─── Smart Variant & Size Matrix ──────────────────────── */}
-          <div className="border-2 border-black p-6 bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-5">
+          <div className="border-2 border-black p-4 sm:p-6 bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4 sm:space-y-5">
             {/* Variants Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-black pb-3 gap-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-black pb-3 gap-2.5 sm:gap-3">
               <div>
                 <div className="flex items-center gap-2.5">
-                  <h2 className="text-sm font-black uppercase tracking-widest">
+                  <h2 className="text-xs sm:text-sm font-black uppercase tracking-widest">
                     Size & Inventory Matrix
                   </h2>
                   <span className="text-[10px] font-black uppercase px-2 py-0.5 border-2 border-black bg-neutral-100">
@@ -697,21 +696,21 @@ export function ProductForm({
             </div>
 
             {/* Quick 1-Click Size Selectors */}
-            <div className="bg-neutral-50 border-2 border-black p-4 space-y-3.5">
+            <div className="bg-neutral-50 border-2 border-black p-3 sm:p-4 space-y-3">
               <div className="flex items-center justify-between border-b border-neutral-300 pb-2">
                 <span className="text-[10px] font-black uppercase tracking-widest text-black flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-                  Quick Size Selectors (Click Chip to Toggle)
+                  <Layers className="w-3.5 h-3.5 text-neutral-700" />
+                  Quick Size Selectors (Click to Toggle)
                 </span>
                 <span className="text-[9px] font-bold text-neutral-400 uppercase hidden sm:inline">
-                  Black = Active / Added
+                  Black = Added
                 </span>
               </div>
 
               {/* Presets by category */}
               <div className="space-y-2.5">
                 {SIZE_PRESETS.map((preset) => (
-                  <div key={preset.name} className="flex flex-col sm:flex-row sm:items-center gap-2">
+                  <div key={preset.name} className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2">
                     <span className="text-[10px] font-black uppercase tracking-wider text-neutral-600 sm:w-40 shrink-0">
                       {preset.name}:
                     </span>
@@ -739,7 +738,7 @@ export function ProductForm({
                       <button
                         type="button"
                         onClick={() => addMultipleSizes(preset.sizes)}
-                        className="h-7 text-[9px] px-2 font-black uppercase tracking-wider border-2 border-black bg-white hover:bg-neutral-200 transition-colors ml-1"
+                        className="h-7 text-[9px] px-2 font-black uppercase tracking-wider border-2 border-black bg-white hover:bg-neutral-200 transition-colors"
                       >
                         + All {preset.category.toUpperCase()}
                       </button>
@@ -749,7 +748,7 @@ export function ProductForm({
               </div>
 
               {/* Freeform Quick Input & Default Stock */}
-              <div className="pt-3 border-t border-neutral-300 flex flex-col md:flex-row md:items-center justify-between gap-3">
+              <div className="pt-3 border-t border-neutral-300 flex flex-col md:flex-row md:items-center justify-between gap-2.5 sm:gap-3">
                 {/* Freeform Custom Size Input */}
                 <div className="flex items-center gap-1.5 flex-1">
                   <Input
@@ -761,7 +760,7 @@ export function ProductForm({
                         handleCustomSizesAdd();
                       }
                     }}
-                    placeholder="Custom sizes (e.g. 40, 41, 42 or M, L, XL)..."
+                    placeholder="Custom sizes (e.g. 40, 41 or M, L)..."
                     className="h-8 text-xs font-bold bg-white"
                   />
                   <Button
@@ -774,7 +773,7 @@ export function ProductForm({
                 </div>
 
                 {/* Default Stock Configurator */}
-                <div className="flex items-center gap-1.5 shrink-0">
+                <div className="flex items-center justify-between sm:justify-end gap-1.5 shrink-0">
                   <span className="text-[10px] font-black uppercase tracking-wider text-neutral-600">
                     Default Stock:
                   </span>
@@ -801,36 +800,36 @@ export function ProductForm({
 
             {/* Batch Controls Bar for Active Variants */}
             {form.variants.length > 0 && (
-              <div className="flex flex-wrap items-center justify-between gap-2 p-2.5 bg-neutral-100 border-2 border-black">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-2.5 bg-neutral-100 border-2 border-black">
                 <span className="text-[10px] font-black uppercase tracking-wider text-black">
-                  Total Inventory: <strong>{form.variants.reduce((acc, v) => acc + (v.stock || 0), 0)} units</strong> across {form.variants.length} sizes
+                  Total Inventory: <strong>{form.variants.reduce((acc, v) => acc + (v.stock || 0), 0)} units</strong> ({form.variants.length} sizes)
                 </span>
 
-                <div className="flex flex-wrap items-center gap-2">
+                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 w-full sm:w-auto">
                   <Button
                     type="button"
                     variant="outline"
                     size="sm"
                     onClick={syncAllPrices}
-                    className="h-7 text-[9px] px-2.5 font-black uppercase bg-white border-black"
+                    className="h-7 text-[8px] sm:text-[9px] px-2 sm:px-2.5 font-black uppercase bg-white border-black flex-1 sm:flex-initial"
                   >
-                    Apply ৳{form.price} to All Sizes
+                    Apply ৳{form.price}
                   </Button>
                   <Button
                     type="button"
                     variant="outline"
                     size="sm"
                     onClick={addVariant}
-                    className="h-7 text-[9px] px-2.5 font-black uppercase bg-white border-black"
+                    className="h-7 text-[8px] sm:text-[9px] px-2 sm:px-2.5 font-black uppercase bg-white border-black flex-1 sm:flex-initial"
                   >
-                    <Plus className="w-3 h-3 mr-1" /> Add Single
+                    <Plus className="w-3 h-3 mr-1" /> Add Custom
                   </Button>
                   <Button
                     type="button"
                     variant="destructive"
                     size="sm"
                     onClick={clearAllVariants}
-                    className="h-7 text-[9px] px-2.5 font-black uppercase"
+                    className="h-7 text-[8px] sm:text-[9px] px-2 sm:px-2.5 font-black uppercase shrink-0"
                   >
                     Clear All
                   </Button>
@@ -840,18 +839,18 @@ export function ProductForm({
 
             {/* Variant Rows Table */}
             {form.variants.length === 0 ? (
-              <div className="border-2 border-dashed border-neutral-300 p-8 text-center bg-neutral-50">
+              <div className="border-2 border-dashed border-neutral-300 p-6 sm:p-8 text-center bg-neutral-50">
                 <Layers className="w-8 h-8 mx-auto mb-2 text-neutral-300" />
                 <p className="text-xs font-black uppercase text-neutral-500 mb-1">
                   No size variants added yet
                 </p>
                 <p className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider">
-                  Click any size button above (like M, L, XL or 40, 41, 42) to add variants in 1 click!
+                  Click any size button above (like M, L, XL or 32, 34) to add variants in 1 click!
                 </p>
               </div>
             ) : (
-              <div className="space-y-2">
-                {/* Table Header */}
+              <div className="space-y-2.5">
+                {/* Desktop Table Header */}
                 <div className="hidden sm:grid grid-cols-12 gap-3 px-3 py-1 text-[9px] font-black uppercase tracking-widest text-neutral-500">
                   <div className="col-span-2">Size</div>
                   <div className="col-span-4">Variant SKU</div>
@@ -863,28 +862,37 @@ export function ProductForm({
                 {form.variants.map((variant, i) => (
                   <div
                     key={i}
-                    className="grid grid-cols-2 sm:grid-cols-12 gap-3 p-3 border-2 border-black items-center bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-neutral-50 transition-colors"
+                    className="p-3 border-2 border-black bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-neutral-50 transition-colors space-y-2 sm:space-y-0 sm:grid sm:grid-cols-12 sm:gap-3 sm:items-center"
                   >
-                    {/* Size */}
-                    <div className="col-span-1 sm:col-span-2 space-y-1">
-                      <Label className="text-[9px] sm:hidden font-bold">Size *</Label>
-                      <div className="flex items-center gap-1.5">
+                    {/* Size and Mobile Delete Button */}
+                    <div className="flex items-center justify-between sm:col-span-2 gap-2">
+                      <div className="flex items-center gap-1.5 flex-1 min-w-0">
                         <span className="w-8 h-8 flex items-center justify-center font-black text-xs bg-black text-white shrink-0">
                           {variant.size || '?'}
                         </span>
                         <Input
-                          className="h-8 text-xs font-black uppercase tracking-wider"
+                          className="h-8 text-xs font-black tracking-wider"
                           value={variant.size}
                           onChange={(e) => updateVariant(i, 'size', e.target.value)}
                           placeholder="Size"
                           required
                         />
                       </div>
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => removeVariant(i)}
+                        className="h-8 w-8 p-0 shrink-0 sm:hidden"
+                        title="Remove size"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </Button>
                     </div>
 
                     {/* SKU */}
-                    <div className="col-span-1 sm:col-span-4 space-y-1">
-                      <Label className="text-[9px] sm:hidden font-bold">SKU *</Label>
+                    <div className="sm:col-span-4 space-y-0.5 sm:space-y-0">
+                      <Label className="text-[9px] sm:hidden font-bold uppercase text-neutral-500">SKU Code *</Label>
                       <Input
                         className="h-8 text-xs font-mono font-bold"
                         value={variant.sku}
@@ -894,34 +902,35 @@ export function ProductForm({
                       />
                     </div>
 
-                    {/* Price */}
-                    <div className="col-span-1 sm:col-span-3 space-y-1">
-                      <Label className="text-[9px] sm:hidden font-bold">Price (৳) *</Label>
-                      <Input
-                        type="number"
-                        min="0"
-                        className="h-8 text-xs font-black"
-                        value={variant.price}
-                        onChange={(e) => updateVariant(i, 'price', Number(e.target.value))}
-                        required
-                      />
+                    {/* Price and Stock: 2 columns on mobile */}
+                    <div className="grid grid-cols-2 gap-2 sm:contents">
+                      <div className="sm:col-span-3 space-y-0.5 sm:space-y-0">
+                        <Label className="text-[9px] sm:hidden font-bold uppercase text-neutral-500">Price (৳) *</Label>
+                        <Input
+                          type="number"
+                          min="0"
+                          className="h-8 text-xs font-black"
+                          value={variant.price}
+                          onChange={(e) => updateVariant(i, 'price', Number(e.target.value))}
+                          required
+                        />
+                      </div>
+
+                      <div className="sm:col-span-2 space-y-0.5 sm:space-y-0">
+                        <Label className="text-[9px] sm:hidden font-bold uppercase text-neutral-500">Stock Units *</Label>
+                        <Input
+                          type="number"
+                          min="0"
+                          className="h-8 text-xs font-black"
+                          value={variant.stock}
+                          onChange={(e) => updateVariant(i, 'stock', Number(e.target.value))}
+                          required
+                        />
+                      </div>
                     </div>
 
-                    {/* Stock */}
-                    <div className="col-span-1 sm:col-span-2 space-y-1">
-                      <Label className="text-[9px] sm:hidden font-bold">Stock *</Label>
-                      <Input
-                        type="number"
-                        min="0"
-                        className="h-8 text-xs font-black"
-                        value={variant.stock}
-                        onChange={(e) => updateVariant(i, 'stock', Number(e.target.value))}
-                        required
-                      />
-                    </div>
-
-                    {/* Delete Action */}
-                    <div className="col-span-2 sm:col-span-1 flex justify-end items-center">
+                    {/* Delete Action (Desktop) */}
+                    <div className="hidden sm:flex col-span-1 justify-end items-center">
                       <Button
                         type="button"
                         variant="destructive"
@@ -940,9 +949,9 @@ export function ProductForm({
           </div>
 
           {/* Size Chart */}
-          <div className="border-2 border-black p-6 bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4">
+          <div className="border-2 border-black p-4 sm:p-6 bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4">
             <div className="flex justify-between items-center border-b-2 border-black pb-2">
-              <h2 className="text-sm font-black uppercase tracking-widest">
+              <h2 className="text-xs sm:text-sm font-black uppercase tracking-widest">
                 Dimension Guide Matrix
               </h2>
               <Button type="button" variant="outline" size="sm" onClick={addSizeChartRow} className="text-[10px]">
@@ -953,59 +962,69 @@ export function ProductForm({
             {form.sizeChart.length === 0 ? (
               <p className="text-xs text-neutral-400 font-bold uppercase">No dimension rows defined.</p>
             ) : (
-              <div className="space-y-2">
-                {form.sizeChart.map((row, i) => (
-                  <div key={i} className="grid grid-cols-5 gap-2 items-center">
-                    <Input
-                      className="h-9 text-[10px]"
-                      placeholder="Waist"
-                      value={row.waist}
-                      onChange={(e) => updateSizeChartRow(i, 'waist', e.target.value)}
-                    />
-                    <Input
-                      className="h-9 text-[10px]"
-                      placeholder="Thigh"
-                      value={row.thigh}
-                      onChange={(e) => updateSizeChartRow(i, 'thigh', e.target.value)}
-                    />
-                    <Input
-                      className="h-9 text-[10px]"
-                      placeholder="Leg Open"
-                      value={row.legOpening}
-                      onChange={(e) => updateSizeChartRow(i, 'legOpening', e.target.value)}
-                    />
-                    <Input
-                      className="h-9 text-[10px]"
-                      placeholder="Length"
-                      value={row.long}
-                      onChange={(e) => updateSizeChartRow(i, 'long', e.target.value)}
-                    />
-                    <Button
-                      type="button"
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => removeSizeChartRow(i)}
-                      className="h-9 w-9 p-0 mx-auto"
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </Button>
+              <div className="overflow-x-auto">
+                <div className="min-w-[420px] space-y-2">
+                  <div className="grid grid-cols-5 gap-2 px-1 text-[9px] font-black uppercase tracking-wider text-neutral-500">
+                    <div>Waist (In)</div>
+                    <div>Thigh (In)</div>
+                    <div>Leg Open</div>
+                    <div>Length</div>
+                    <div className="text-center">Action</div>
                   </div>
-                ))}
+                  {form.sizeChart.map((row, i) => (
+                    <div key={i} className="grid grid-cols-5 gap-2 items-center">
+                      <Input
+                        className="h-9 text-xs font-bold"
+                        placeholder="Waist"
+                        value={row.waist}
+                        onChange={(e) => updateSizeChartRow(i, 'waist', e.target.value)}
+                      />
+                      <Input
+                        className="h-9 text-xs font-bold"
+                        placeholder="Thigh"
+                        value={row.thigh}
+                        onChange={(e) => updateSizeChartRow(i, 'thigh', e.target.value)}
+                      />
+                      <Input
+                        className="h-9 text-xs font-bold"
+                        placeholder="Leg Open"
+                        value={row.legOpening}
+                        onChange={(e) => updateSizeChartRow(i, 'legOpening', e.target.value)}
+                      />
+                      <Input
+                        className="h-9 text-xs font-bold"
+                        placeholder="Length"
+                        value={row.long}
+                        onChange={(e) => updateSizeChartRow(i, 'long', e.target.value)}
+                      />
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => removeSizeChartRow(i)}
+                        className="h-9 w-9 p-0 mx-auto"
+                        title="Delete dimension row"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </div>
         </div>
 
         {/* Right Col: Media & Highlights */}
-        <div className="space-y-8">
+        <div className="space-y-6 sm:space-y-8">
           {/* Images Upload */}
-          <div className="border-2 border-black p-6 bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4">
-            <h2 className="text-sm font-black uppercase tracking-widest border-b-2 border-black pb-2">
+          <div className="border-2 border-black p-4 sm:p-6 bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4">
+            <h2 className="text-xs sm:text-sm font-black uppercase tracking-widest border-b-2 border-black pb-2">
               Visual Assets ({form.images.length})
             </h2>
 
             <div className="space-y-3">
-              <label className="border-2 border-dashed border-black p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-neutral-50 transition-colors">
+              <label className="border-2 border-dashed border-black p-4 sm:p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-neutral-50 transition-colors">
                 {uploadingImage ? (
                   <Loader2 className="w-6 h-6 animate-spin text-black" />
                 ) : (
@@ -1028,7 +1047,7 @@ export function ProductForm({
               </label>
 
               {/* Grid of uploaded images */}
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3">
                 {form.images.map((url, i) => (
                   <div
                     key={i}
@@ -1038,7 +1057,8 @@ export function ProductForm({
                     <button
                       type="button"
                       onClick={() => removeImage(i)}
-                      className="absolute top-1 right-1 bg-red-600 text-white p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="absolute top-1 right-1 bg-red-600 text-white p-1.5 opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shadow-sm"
+                      title="Remove image"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                     </button>
@@ -1049,7 +1069,7 @@ export function ProductForm({
           </div>
 
           {/* Highlights */}
-          <div className="border-2 border-black p-6 bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4">
+          <div className="border-2 border-black p-4 sm:p-6 bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4">
             <h2 className="text-sm font-black uppercase tracking-widest border-b-2 border-black pb-2">
               Feature Highlights
             </h2>

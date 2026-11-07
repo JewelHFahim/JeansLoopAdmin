@@ -2,11 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  -webkit-tap-highlight-color: transparent;
+  scroll-behavior: smooth;
+}
+
 body {
   color: #000000;
   background: #ffffff;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Touch scrolling optimization */
+.overflow-x-auto,
+.overflow-y-auto {
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Custom scrollbar */

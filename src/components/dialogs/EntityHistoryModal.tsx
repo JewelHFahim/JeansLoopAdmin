@@ -53,32 +53,30 @@ export function EntityHistoryModal({
   const logs: ActivityLogItem[] = response?.data || [];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto animate-in fade-in">
-      <div className="w-full max-w-lg bg-white border-4 border-black p-6 md:p-8 shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] space-y-6 my-8 max-h-[90vh] flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-3 sm:p-4 overflow-y-auto animate-in fade-in">
+      <div className="w-full max-w-lg bg-white border-2 sm:border-4 border-black p-4 sm:p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] sm:shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] space-y-4 sm:space-y-6 my-4 sm:my-8 max-h-[90vh] flex flex-col">
         {/* Modal Header */}
-        <div className="flex items-start justify-between border-b-2 border-black pb-4">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-black text-white">
+        <div className="flex items-start justify-between border-b-2 border-black pb-3 sm:pb-4 gap-2">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+            <div className="p-2 bg-black text-white shrink-0">
               {entityType === 'ORDER' ? (
-                <ShoppingCart className="w-5 h-5" />
+                <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
               ) : (
-                <Package className="w-5 h-5" />
+                <Package className="w-4 h-4 sm:w-5 sm:h-5" />
               )}
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-black uppercase tracking-widest text-neutral-400">
-                  {entityType} Audit History
-                </span>
-              </div>
-              <h2 className="text-xl font-black uppercase italic tracking-tight text-black line-clamp-1">
+            <div className="min-w-0">
+              <span className="text-[9px] font-black uppercase tracking-widest text-neutral-400 block">
+                {entityType} Audit History
+              </span>
+              <h2 className="text-base sm:text-xl font-black uppercase italic tracking-tight text-black truncate">
                 {entityTitle}
               </h2>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1 hover:bg-neutral-100 border border-black transition-colors"
+            className="p-1.5 hover:bg-neutral-100 border border-black transition-colors shrink-0"
           >
             <X className="h-4 w-4" />
           </button>

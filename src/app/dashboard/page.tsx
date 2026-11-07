@@ -79,7 +79,7 @@ export default function DashboardOverviewPage() {
   }));
 
   return (
-    <div className="space-y-8 animate-in fade-in">
+    <div className="space-y-6 sm:space-y-8 animate-in fade-in">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b-2 border-black pb-3 sm:pb-4 gap-3">
         <div>
@@ -91,57 +91,57 @@ export default function DashboardOverviewPage() {
           </h1>
         </div>
 
-        <div className="flex gap-3">
-          <Link href="/dashboard/products/new">
-            <Button size="sm" className="gap-2">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          <Link href="/dashboard/products/new" className="flex-1 sm:flex-initial">
+            <Button size="sm" className="w-full sm:w-auto gap-2">
               <Plus className="h-4 w-4" /> Add Product
             </Button>
           </Link>
-          <Link href="/dashboard/orders">
-            <Button variant="outline" size="sm" className="gap-2">
+          <Link href="/dashboard/orders" className="flex-1 sm:flex-initial">
+            <Button variant="outline" size="sm" className="w-full sm:w-auto gap-2">
               View Orders <ArrowRight className="h-4 w-4" />
             </Button>
           </Link>
         </div>
       </div>
 
-      {/* Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Stat Cards - 2 cols on mobile for compact overview */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
         {statCards.map((card, idx) => {
           const Icon = card.icon;
           return (
-            <Card key={idx} className="p-6 space-y-2">
-              <div className="flex justify-between items-start">
-                <span className="text-[10px] font-black uppercase tracking-widest text-neutral-400">
+            <Card key={idx} className="p-3.5 sm:p-6 space-y-1 sm:space-y-2">
+              <div className="flex justify-between items-start gap-1">
+                <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider sm:tracking-widest text-neutral-400 line-clamp-1">
                   {card.title}
                 </span>
-                <div className="p-2 border-2 border-black bg-neutral-100">
-                  <Icon className="h-4 w-4 text-black" />
+                <div className="p-1 sm:p-2 border border-black sm:border-2 bg-neutral-100 shrink-0">
+                  <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-black" />
                 </div>
               </div>
-              <p className="text-2xl font-black text-black tracking-tight">{card.value}</p>
-              <p className="text-[10px] font-bold text-neutral-500 uppercase">{card.subtitle}</p>
+              <p className="text-lg sm:text-2xl font-black text-black tracking-tight">{card.value}</p>
+              <p className="text-[8px] sm:text-[10px] font-bold text-neutral-500 uppercase truncate">{card.subtitle}</p>
             </Card>
           );
         })}
       </div>
 
       {/* Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
         {/* Sales Timeline */}
-        <div className="lg:col-span-2 border-2 border-black p-6 bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4">
+        <div className="lg:col-span-2 border-2 border-black p-4 sm:p-6 bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4">
           <div className="border-b-2 border-black pb-3">
-            <h2 className="text-sm font-black uppercase tracking-widest">
+            <h2 className="text-xs sm:text-sm font-black uppercase tracking-widest">
               30-Day Revenue Trend (BDT)
             </h2>
           </div>
 
           {chartData.length === 0 ? (
-            <div className="h-64 flex items-center justify-center text-xs text-neutral-400 font-bold uppercase">
+            <div className="h-56 sm:h-64 flex items-center justify-center text-xs text-neutral-400 font-bold uppercase">
               No sales data recorded in the last 30 days
             </div>
           ) : (
-            <div className="h-64 w-full">
+            <div className="h-56 sm:h-64 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={chartData}>
                   <XAxis dataKey="date" stroke="#000000" fontSize={10} tickLine={false} />
@@ -164,17 +164,17 @@ export default function DashboardOverviewPage() {
         </div>
 
         {/* Status Distribution */}
-        <div className="border-2 border-black p-6 bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4">
+        <div className="border-2 border-black p-4 sm:p-6 bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4">
           <div className="border-b-2 border-black pb-3">
-            <h2 className="text-sm font-black uppercase tracking-widest">Order Status Registry</h2>
+            <h2 className="text-xs sm:text-sm font-black uppercase tracking-widest">Order Status Registry</h2>
           </div>
 
           {pieData.length === 0 ? (
-            <div className="h-64 flex items-center justify-center text-xs text-neutral-400 font-bold uppercase">
+            <div className="h-56 sm:h-64 flex items-center justify-center text-xs text-neutral-400 font-bold uppercase">
               No orders found
             </div>
           ) : (
-            <div className="h-64 w-full">
+            <div className="h-56 sm:h-64 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -183,7 +183,7 @@ export default function DashboardOverviewPage() {
                     nameKey="name"
                     cx="50%"
                     cy="50%"
-                    outerRadius={80}
+                    outerRadius={70}
                     label={({ name, percent }: any) => `${name} ${(percent * 100).toFixed(0)}%`}
                     labelLine={false}
                     fontSize={9}

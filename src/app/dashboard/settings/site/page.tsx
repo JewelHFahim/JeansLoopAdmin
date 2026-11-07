@@ -24,7 +24,6 @@ import {
   Eye,
   CheckCircle2,
   AlertCircle,
-  Sparkles,
   Share2,
   PhoneCall,
   LayoutTemplate,
@@ -213,9 +212,9 @@ export default function SiteSettingsPage() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6 max-w-6xl pb-16">
       {/* Top Header & Sticky Save Actions */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b-2 border-black pb-3 sm:pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-2 border-black pb-3 sm:pb-4">
         <div>
-          <div className="flex items-center gap-2 mb-1">
+          <div className="flex items-center gap-2 mb-1 flex-wrap">
             <span className="bg-black text-white px-2 py-0.5 text-[9px] font-black uppercase tracking-widest">
               SYSTEM CONFIGURATION
             </span>
@@ -237,11 +236,11 @@ export default function SiteSettingsPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 w-full sm:w-auto">
           <Button
             type="submit"
             disabled={updateMutation.isPending}
-            className="h-11 px-6 bg-black text-white hover:bg-neutral-800 font-black text-xs uppercase tracking-wider shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]"
+            className="w-full sm:w-auto h-11 px-6 bg-black text-white hover:bg-neutral-800 font-black text-xs uppercase tracking-wider shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]"
           >
             {updateMutation.isPending ? (
               <>
@@ -257,57 +256,57 @@ export default function SiteSettingsPage() {
       </div>
 
       {/* Split Navigation Tabs */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 border-2 border-black p-1.5 bg-neutral-100 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2 border-2 border-black p-1.5 bg-neutral-100 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         <button
           type="button"
           onClick={() => handleTabChange('brand')}
-          className={`flex items-center justify-center gap-2 py-2.5 px-3 text-xs font-black uppercase tracking-wider transition-all ${
+          className={`flex items-center justify-center gap-1.5 sm:gap-2 py-2 sm:py-2.5 px-2 sm:px-3 text-[10px] sm:text-xs font-black uppercase tracking-wider transition-all ${
             activeTab === 'brand'
               ? 'bg-black text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)]'
               : 'bg-white text-neutral-700 hover:text-black hover:bg-neutral-50'
           }`}
         >
-          <Globe className="w-4 h-4 shrink-0" />
-          <span>Brand & Identity</span>
+          <Globe className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+          <span className="truncate">Brand</span>
         </button>
 
         <button
           type="button"
           onClick={() => handleTabChange('contact')}
-          className={`flex items-center justify-center gap-2 py-2.5 px-3 text-xs font-black uppercase tracking-wider transition-all ${
+          className={`flex items-center justify-center gap-1.5 sm:gap-2 py-2 sm:py-2.5 px-2 sm:px-3 text-[10px] sm:text-xs font-black uppercase tracking-wider transition-all ${
             activeTab === 'contact'
               ? 'bg-black text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)]'
               : 'bg-white text-neutral-700 hover:text-black hover:bg-neutral-50'
           }`}
         >
-          <PhoneCall className="w-4 h-4 shrink-0" />
-          <span>Contact & Operations</span>
+          <PhoneCall className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+          <span className="truncate">Contact</span>
         </button>
 
         <button
           type="button"
           onClick={() => handleTabChange('social')}
-          className={`flex items-center justify-center gap-2 py-2.5 px-3 text-xs font-black uppercase tracking-wider transition-all ${
+          className={`flex items-center justify-center gap-1.5 sm:gap-2 py-2 sm:py-2.5 px-2 sm:px-3 text-[10px] sm:text-xs font-black uppercase tracking-wider transition-all ${
             activeTab === 'social'
               ? 'bg-black text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)]'
               : 'bg-white text-neutral-700 hover:text-black hover:bg-neutral-50'
           }`}
         >
-          <Share2 className="w-4 h-4 shrink-0" />
-          <span>Social & Channels</span>
+          <Share2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+          <span className="truncate">Social</span>
         </button>
 
         <button
           type="button"
           onClick={() => handleTabChange('preview')}
-          className={`flex items-center justify-center gap-2 py-2.5 px-3 text-xs font-black uppercase tracking-wider transition-all ${
+          className={`flex items-center justify-center gap-1.5 sm:gap-2 py-2 sm:py-2.5 px-2 sm:px-3 text-[10px] sm:text-xs font-black uppercase tracking-wider transition-all ${
             activeTab === 'preview'
               ? 'bg-black text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)]'
               : 'bg-white text-neutral-700 hover:text-black hover:bg-neutral-50'
           }`}
         >
-          <Eye className="w-4 h-4 shrink-0" />
-          <span>Storefront Preview</span>
+          <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+          <span className="truncate">Preview</span>
         </button>
       </div>
 
@@ -458,7 +457,7 @@ export default function SiteSettingsPage() {
                       onChange={handleChange}
                       rows={3}
                       placeholder="e.g. Complimentary shipping inside Dhaka on orders above ৳2,000!"
-                      className="w-full rounded-none border-2 border-black bg-white px-4 py-3 text-xs font-bold uppercase placeholder:normal-case placeholder:font-normal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black"
+                      className="w-full rounded-none border-2 border-black bg-white px-4 py-3 text-xs font-bold placeholder:text-neutral-400 placeholder:font-normal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black"
                     />
                   </div>
 
@@ -470,9 +469,9 @@ export default function SiteSettingsPage() {
                     <div className="flex flex-wrap gap-2">
                       {[
                         'Complimentary shipping inside Dhaka on orders above ৳2,000!',
-                        '🔥 Special Offer: Use code FIRST10 for 10% off your first order!',
-                        '⚡ New Arrivals: Raw Denim & Formal Pants Collection Live Now!',
-                        '✨ 7-Day Hassle-Free Exchange Guarantee across Bangladesh',
+                        'Special Offer: Use code FIRST10 for 10% off your first order!',
+                        'New Arrivals: Raw Denim & Formal Pants Collection Live Now!',
+                        '7-Day Hassle-Free Exchange Guarantee across Bangladesh',
                       ].map((preset) => (
                         <button
                           key={preset}
@@ -626,6 +625,19 @@ export default function SiteSettingsPage() {
                     </label>
                   </div>
 
+                  {/* Mobile dedicated upload button */}
+                  <label className="sm:hidden w-full flex items-center justify-center gap-2 py-2.5 px-3 border-2 border-black bg-black text-white text-[10px] font-black uppercase tracking-wider cursor-pointer">
+                    <Upload className="w-3.5 h-3.5" />
+                    <span>{isUploading ? 'Uploading...' : logoPreview ? 'Replace Logo File' : 'Upload Logo File'}</span>
+                    <input
+                      type="file"
+                      className="hidden"
+                      onChange={handleLogoUpload}
+                      accept="image/*"
+                      disabled={isUploading}
+                    />
+                  </label>
+
                   {/* Manual URL input fallback */}
                   <div className="space-y-1.5">
                     <Label htmlFor="logo" className="text-[10px] font-black uppercase tracking-wider text-neutral-600">
@@ -754,7 +766,7 @@ export default function SiteSettingsPage() {
                     value={formData.address}
                     onChange={handleChange}
                     placeholder="e.g. House 12, Road 4, Sector 3, Uttara, Dhaka-1230"
-                    className="w-full rounded-none border-2 border-black bg-white px-4 py-3 text-xs font-bold uppercase placeholder:normal-case placeholder:font-normal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black"
+                    className="w-full rounded-none border-2 border-black bg-white px-4 py-3 text-xs font-bold placeholder:text-neutral-400 placeholder:font-normal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black"
                   />
                   <p className="text-[11px] text-neutral-500 font-medium">
                     Displayed in the footer, contact hub card, and return dispatch instructions.

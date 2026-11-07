@@ -102,31 +102,31 @@ export default function AdminOrderDetailsPage({ params }: { params: Promise<{ id
   }
 
   return (
-    <div className="space-y-8 pb-16">
+    <div className="space-y-6 sm:space-y-8 pb-16">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-black pb-3 sm:pb-4 gap-3">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 sm:gap-3">
           <Link href="/dashboard/orders">
-            <Button variant="outline" size="icon" className="h-9 w-9">
+            <Button variant="outline" size="icon" className="h-8 w-8 sm:h-9 sm:w-9 shrink-0">
               <ArrowLeft className="h-4 w-4" />
             </Button>
           </Link>
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-xl sm:text-2xl font-black uppercase italic tracking-tight text-black leading-none">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h1 className="text-lg sm:text-2xl font-black uppercase italic tracking-tight text-black leading-none">
                 Order #{order._id.slice(-6).toUpperCase()}
               </h1>
-              <span className="bg-black text-white px-2 py-0.5 text-[9px] font-black uppercase">
+              <span className="bg-black text-white px-2 py-0.5 text-[9px] font-black uppercase shrink-0">
                 {order.status}
               </span>
             </div>
-            <p className="text-[10px] font-mono text-neutral-400 mt-1 select-all">{order._id}</p>
+            <p className="text-[10px] font-mono text-neutral-400 mt-0.5 select-all truncate">{order._id}</p>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          <Link href={`/dashboard/orders/${order._id}/invoice`}>
-            <Button variant="outline" size="sm" className="gap-2 text-[10px]">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          <Link href={`/dashboard/orders/${order._id}/invoice`} className="flex-1 sm:flex-initial">
+            <Button variant="outline" size="sm" className="w-full sm:w-auto gap-1.5 text-[10px]">
               <Printer className="h-3.5 w-3.5" /> Print Invoice
             </Button>
           </Link>
@@ -137,7 +137,7 @@ export default function AdminOrderDetailsPage({ params }: { params: Promise<{ id
               variant="outline"
               onClick={() => payMutation.mutate()}
               disabled={payMutation.isPending}
-              className="gap-2 text-[10px]"
+              className="flex-1 sm:flex-initial gap-1.5 text-[10px]"
             >
               <CheckCircle className="h-3.5 w-3.5 text-green-600" /> Mark Paid
             </Button>
@@ -148,7 +148,7 @@ export default function AdminOrderDetailsPage({ params }: { params: Promise<{ id
               size="sm"
               onClick={() => deliverMutation.mutate()}
               disabled={deliverMutation.isPending}
-              className="gap-2 text-[10px]"
+              className="flex-1 sm:flex-initial gap-1.5 text-[10px]"
             >
               <Truck className="h-3.5 w-3.5" /> Mark Delivered
             </Button>
@@ -156,33 +156,33 @@ export default function AdminOrderDetailsPage({ params }: { params: Promise<{ id
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
         {/* Left 2 Cols: Order Items & Delivery Address */}
-        <div className="lg:col-span-2 space-y-8">
+        <div className="lg:col-span-2 space-y-6 sm:space-y-8">
           {/* Order Items */}
-          <div className="border-2 border-black p-6 bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4">
-            <h2 className="text-sm font-black uppercase tracking-widest border-b-2 border-black pb-2">
+          <div className="border-2 border-black p-4 sm:p-6 bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4">
+            <h2 className="text-xs sm:text-sm font-black uppercase tracking-widest border-b-2 border-black pb-2">
               Line Items ({order.items.length})
             </h2>
 
             <div className="border-2 border-black divide-y-2 divide-black">
               {order.items.map((item, idx) => (
-                <div key={idx} className="p-4 flex items-center gap-4 bg-white">
-                  <div className="relative w-16 h-20 flex-shrink-0 bg-neutral-100 border border-neutral-200">
+                <div key={idx} className="p-3 sm:p-4 flex items-center gap-3 sm:gap-4 bg-white">
+                  <div className="relative w-14 h-16 sm:w-16 sm:h-20 flex-shrink-0 bg-neutral-100 border border-neutral-200">
                     {item.image && (
                       <Image src={item.image} alt={item.name} fill className="object-cover" sizes="64px" />
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-xs font-black uppercase truncate text-black">{item.name}</p>
-                    <p className="text-[10px] text-neutral-400 font-mono mt-0.5">
+                    <p className="text-[10px] text-neutral-400 font-mono mt-0.5 truncate">
                       SKU: {item.variantSku} / Size: {item.size} / Color: {item.color}
                     </p>
                     <p className="text-xs font-bold text-neutral-600 mt-1">
                       {formatPrice(item.price)} × {item.quantity}
                     </p>
                   </div>
-                  <span className="text-sm font-black text-black">
+                  <span className="text-xs sm:text-sm font-black text-black shrink-0">
                     {formatPrice(item.price * item.quantity)}
                   </span>
                 </div>
@@ -191,7 +191,7 @@ export default function AdminOrderDetailsPage({ params }: { params: Promise<{ id
           </div>
 
           {/* Shipping Address */}
-          <div className="border-2 border-black p-6 bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4">
+          <div className="border-2 border-black p-4 sm:p-6 bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4">
             <div className="flex justify-between items-center border-b-2 border-black pb-2">
               <h2 className="text-sm font-black uppercase tracking-widest">Delivery Destination</h2>
               <Button
@@ -272,10 +272,10 @@ export default function AdminOrderDetailsPage({ params }: { params: Promise<{ id
         </div>
 
         {/* Right Col: Status Changer & Financial Summary */}
-        <div className="space-y-8">
+        <div className="space-y-6 sm:space-y-8">
           {/* Status Control */}
-          <div className="border-2 border-black p-6 bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4">
-            <h2 className="text-sm font-black uppercase tracking-widest border-b-2 border-black pb-2">
+          <div className="border-2 border-black p-4 sm:p-6 bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4">
+            <h2 className="text-xs sm:text-sm font-black uppercase tracking-widest border-b-2 border-black pb-2">
               Status Progression
             </h2>
 
@@ -335,8 +335,8 @@ export default function AdminOrderDetailsPage({ params }: { params: Promise<{ id
           </div>
 
           {/* Payment & Financials */}
-          <div className="border-2 border-black p-6 bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4">
-            <h2 className="text-sm font-black uppercase tracking-widest border-b-2 border-black pb-2">
+          <div className="border-2 border-black p-4 sm:p-6 bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-4">
+            <h2 className="text-xs sm:text-sm font-black uppercase tracking-widest border-b-2 border-black pb-2">
               Financial Breakdown
             </h2>
 

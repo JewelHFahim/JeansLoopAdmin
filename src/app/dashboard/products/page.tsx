@@ -154,15 +154,15 @@ export default function ProductsListPage() {
           </h1>
         </div>
 
-        <Link href="/dashboard/products/new">
-          <Button size="sm" className="gap-2 bg-black hover:bg-neutral-800 text-white font-black uppercase text-xs">
+        <Link href="/dashboard/products/new" className="w-full sm:w-auto">
+          <Button size="sm" className="w-full sm:w-auto gap-2 bg-black hover:bg-neutral-800 text-white font-black uppercase text-xs">
             <Plus className="h-4 w-4" /> Add Product
           </Button>
         </Link>
       </div>
 
       {/* Filter Toolbar */}
-      <div className="border-2 border-black bg-white p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] space-y-3">
+      <div className="border-2 border-black bg-white p-3 sm:p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] space-y-3">
         <div className="flex items-center justify-between border-b border-black/15 pb-2.5">
           <div className="flex items-center gap-2">
             <Filter className="w-3.5 h-3.5 text-black" />
@@ -180,7 +180,7 @@ export default function ProductsListPage() {
         </div>
 
         {/* Filter Controls Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-2.5 sm:gap-3">
           {/* Keyword Search */}
           <div className="lg:col-span-1">
             <SearchInput
@@ -354,9 +354,14 @@ export default function ProductsListPage() {
         </div>
       </div>
 
-      {/* Table */}
-      <div className="border-2 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-x-auto">
-        <table className="w-full text-xs text-left border-collapse">
+      {/* Table with mobile horizontal scroll indicator */}
+      <div className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
+        <div className="lg:hidden flex items-center justify-between px-3 py-1.5 bg-neutral-100 border-b border-black text-[9px] font-bold text-neutral-500 uppercase tracking-wider">
+          <span>Catalog Items</span>
+          <span>Scroll horizontally for details →</span>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[760px] text-xs text-left border-collapse">
           <thead>
             <tr className="bg-black text-white uppercase text-[10px] font-black tracking-wider">
               <th className="p-4 border-r border-neutral-700">Name & Category</th>
@@ -519,20 +524,22 @@ export default function ProductsListPage() {
             )}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Pagination */}
       {pagination && pagination.pages > 1 && (
-        <div className="flex justify-between items-center pt-4">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-3 pt-4 text-center sm:text-left">
           <p className="text-xs font-bold uppercase text-neutral-500">
             Total {pagination.total} Products
           </p>
-          <div className="flex gap-2">
+          <div className="flex gap-2 w-full sm:w-auto">
             <Button
               variant="outline"
               size="sm"
               disabled={page <= 1}
               onClick={() => setPage((p) => p - 1)}
+              className="flex-1 sm:flex-initial"
             >
               Previous
             </Button>
@@ -541,6 +548,7 @@ export default function ProductsListPage() {
               size="sm"
               disabled={page >= pagination.pages}
               onClick={() => setPage((p) => p + 1)}
+              className="flex-1 sm:flex-initial"
             >
               Next
             </Button>

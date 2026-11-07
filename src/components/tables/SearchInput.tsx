@@ -33,20 +33,21 @@ export function SearchInput({
         placeholder={placeholder}
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        className="w-full bg-white border-2 border-black rounded-none text-[10px] font-black uppercase px-3 py-2 pl-9 pr-8 outline-none focus:bg-black focus:text-white transition-all placeholder:text-neutral-300 placeholder:normal-case placeholder:font-normal"
+        className="w-full h-10 bg-white border-2 border-black rounded-none text-xs sm:text-[10px] font-bold px-3 py-2 pl-9 pr-8 outline-none focus:bg-black focus:text-white transition-all placeholder:text-neutral-400 placeholder:font-normal"
       />
       <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-current">
         {isLoading ? (
           <Loader2 className="w-3.5 h-3.5 animate-spin" />
         ) : (
-          <Search className="w-3.5 h-3.5" />
+          <Search className="w-3.5 h-3.5 text-neutral-500" />
         )}
       </div>
       {value && (
         <button
           type="button"
           onClick={() => setValue('')}
-          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-black"
+          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-black p-1"
+          aria-label="Clear search"
         >
           <X className="w-3.5 h-3.5" />
         </button>

@@ -48,16 +48,16 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-neutral-100 p-4">
-      <div className="w-full max-w-sm border-4 border-black p-8 bg-white shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] relative space-y-8">
-        <div className="border-b-4 border-black pb-4">
+    <div className="min-h-screen flex items-center justify-center bg-neutral-100 p-3 sm:p-4">
+      <div className="w-full max-w-sm border-2 sm:border-4 border-black p-5 sm:p-8 bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] sm:shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] relative space-y-6 sm:space-y-8">
+        <div className="border-b-2 sm:border-b-4 border-black pb-3 sm:pb-4">
           <div className="flex items-center gap-2 mb-1">
             <ShieldCheck className="h-4 w-4 text-black" />
             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-400">
               Security Protocol
             </span>
           </div>
-          <h1 className="text-3xl font-black uppercase italic tracking-tight text-black leading-none">
+          <h1 className="text-2xl sm:text-3xl font-black uppercase italic tracking-tight text-black leading-none">
             Fire Cutter / Admin
           </h1>
         </div>
