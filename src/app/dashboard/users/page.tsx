@@ -29,6 +29,7 @@ const AVAILABLE_PERMISSIONS = [
   { id: 'categories', label: 'Categories', desc: 'Create and organize product categories' },
   { id: 'coupons', label: 'Coupons & Discounts', desc: 'Manage promotional coupons and discount codes' },
   { id: 'sliders', label: 'Hero Sliders', desc: 'Update homepage hero banners and promotions' },
+  { id: 'reviews', label: 'Reviews Moderation', desc: 'Approve, reject, and manage product reviews' },
   { id: 'settings', label: 'Site Settings', desc: 'Configure store contacts, address, and hours' },
   { id: 'dashboard', label: 'Command Center', desc: 'View sales statistics and dashboard charts' },
 ] as const;

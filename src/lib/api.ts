@@ -9,6 +9,8 @@ import type {
   UserItem,
   DashboardStats,
   ActivityLogItem,
+  ReviewItem,
+  AdminReviewsResponse,
   ApiResponse,
   PaginatedResponse,
 } from './api-types';
@@ -205,6 +207,23 @@ export const statsApi = {
 export const activityLogsApi = {
   getAll: (params?: { page?: number; limit?: number; entityType?: string; entityId?: string; keyword?: string }) =>
     apiClient.get<PaginatedResponse<ActivityLogItem>>('/activity-logs', { params }),
+};
+
+export const reviewsApi = {
+  getAll: (params?: {
+    page?: number;
+    limit?: number;
+    status?: string;
+    productId?: string;
+    rating?: number;
+    keyword?: string;
+  }) => apiClient.get<ApiResponse<AdminReviewsResponse>>('/reviews/admin', { params }),
+
+  updateStatus: (id: string, status: 'approved' | 'rejected' | 'pending') =>
+    apiClient.patch<ApiResponse<ReviewItem>>(`/reviews/admin/${id}/status`, { status }),
+
+  delete: (id: string) =>
+    apiClient.delete<ApiResponse<null>>(`/reviews/admin/${id}`),
 };
 
 export const uploadApi = {

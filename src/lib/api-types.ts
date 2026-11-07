@@ -196,6 +196,55 @@ export interface ActivityLogItem {
   createdAt: string;
 }
 
+export interface ReviewProductInfo {
+  _id: string;
+  name: string;
+  slug: string;
+  images: string[];
+  price: number;
+  category: string;
+}
+
+export interface ReviewUserInfo {
+  _id: string;
+  name: string;
+  email: string;
+  phone?: string;
+}
+
+export interface ReviewItem {
+  _id: string;
+  productId: ReviewProductInfo | string;
+  userId?: ReviewUserInfo | string;
+  name: string;
+  email?: string;
+  rating: number;
+  title: string;
+  comment: string;
+  fit?: 'true_to_size' | 'runs_small' | 'runs_large';
+  verifiedPurchase: boolean;
+  helpfulCount: number;
+  status: 'pending' | 'approved' | 'rejected';
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AdminReviewsResponse {
+  items: ReviewItem[];
+  counts: {
+    pending: number;
+    approved: number;
+    rejected: number;
+    total: number;
+  };
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    pages: number;
+  };
+}
+
 export interface ApiResponse<T> {
   success: boolean;
   data: T;

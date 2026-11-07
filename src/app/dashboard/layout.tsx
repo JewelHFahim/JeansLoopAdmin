@@ -18,9 +18,10 @@ import {
   ExternalLink,
   ShieldAlert,
   ShieldCheck,
+  Star,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { authApi, settingsApi } from '@/lib/api';
+import { authApi, settingsApi, reviewsApi } from '@/lib/api';
 import { useQuery } from '@tanstack/react-query';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -37,6 +38,20 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     },
   });
   const siteTitle = settingsRes?.title || 'Fire Cutter';
+
+  const { data: pendingReviewsRes } = useQuery({
+    queryKey: ['admin-reviews-pending-count'],
+    queryFn: async () => {
+      try {
+        const res = await reviewsApi.getAll({ status: 'pending', limit: 1 });
+        return res.data.data?.counts?.pending || 0;
+      } catch {
+        return 0;
+      }
+    },
+    refetchInterval: 30000,
+  });
+  const pendingReviewsCount = pendingReviewsRes || 0;
 
   useEffect(() => {
     if (typeof document !== 'undefined') {
@@ -100,6 +115,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     { href: '/dashboard', label: 'Command Center', icon: LayoutDashboard, permission: 'dashboard' },
     { href: '/dashboard/products', label: 'Products', icon: Package, permission: 'products' },
     { href: '/dashboard/orders', label: 'Orders', icon: ShoppingCart, permission: 'orders' },
+    { href: '/dashboard/reviews', label: 'Reviews', icon: Star, permission: 'reviews', badge: pendingReviewsCount },
     { href: '/dashboard/users', label: 'Users & Staff', icon: Users, permission: 'users', adminOnly: true },
     { href: '/dashboard/settings/categories', label: 'Categories', icon: Layers, permission: 'categories' },
     { href: '/dashboard/settings/coupons', label: 'Coupons', icon: Tag, permission: 'coupons' },
@@ -230,7 +246,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     : 'border-transparent text-neutral-400 hover:text-white hover:bg-neutral-900'
                 }`}
               >
-                <Icon className="h-4 w-4 shrink-0" /> <span className="truncate">{link.label}</span>
+                <Icon className="h-4 w-4 shrink-0" />
+                <span className="truncate flex-1">{link.label}</span>
+                {Boolean(link.badge && link.badge > 0) && (
+                  <span
+                    className={`px-1.5 py-0.2 text-[9px] font-black tracking-wider border shrink-0 ${
+                      isActive
+                        ? 'bg-amber-400 text-black border-black shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]'
+                        : 'bg-amber-400 text-black border-amber-500'
+                    }`}
+                  >
+                    {link.badge}
+                  </span>
+                )}
               </Link>
             );
           })}
