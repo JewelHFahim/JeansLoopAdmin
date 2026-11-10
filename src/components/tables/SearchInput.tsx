@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Search, X, Loader2 } from 'lucide-react';
 import { useDebounce } from '@/hooks/useDebounce';
 
 interface SearchInputProps {
   placeholder?: string;
   initialValue?: string;
+  value?: string;
   onDebouncedChange: (value: string) => void;
   isLoading?: boolean;
   className?: string;
@@ -15,16 +16,41 @@ interface SearchInputProps {
 export function SearchInput({
   placeholder = 'SEARCH REGISTRY...',
   initialValue = '',
+  value: controlledValue,
   onDebouncedChange,
   isLoading = false,
   className = '',
 }: SearchInputProps) {
-  const [value, setValue] = useState(initialValue);
+  const [value, setValue] = useState(controlledValue !== undefined ? controlledValue : initialValue);
   const debounced = useDebounce(value, 400);
 
+  const callbackRef = useRef(onDebouncedChange);
   useEffect(() => {
-    onDebouncedChange(debounced);
-  }, [debounced, onDebouncedChange]);
+    callbackRef.current = onDebouncedChange;
+  });
+
+  // Sync external controlled value updates (e.g. on Reset Filters)
+  useEffect(() => {
+    if (controlledValue !== undefined && controlledValue !== value) {
+      setValue(controlledValue);
+    }
+  }, [controlledValue]);
+
+  // Sync initialValue updates if controlledValue is not used
+  useEffect(() => {
+    if (initialValue !== undefined && controlledValue === undefined && initialValue !== value) {
+      setValue(initialValue);
+    }
+  }, [initialValue, controlledValue]);
+
+  useEffect(() => {
+    callbackRef.current(debounced);
+  }, [debounced]);
+
+  const handleClear = () => {
+    setValue('');
+    callbackRef.current('');
+  };
 
   return (
     <div className={`relative ${className}`}>
@@ -45,7 +71,7 @@ export function SearchInput({
       {value && (
         <button
           type="button"
-          onClick={() => setValue('')}
+          onClick={handleClear}
           className="absolute right-2.5 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-black p-1"
           aria-label="Clear search"
         >

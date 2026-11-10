@@ -175,6 +175,7 @@ export default function UsersDirectoryPage() {
       <div className="max-w-md">
         <SearchInput
           placeholder="SEARCH BY NAME, EMAIL, OR PHONE..."
+          value={keyword}
           onDebouncedChange={(val) => {
             setKeyword(val);
             setPage(1);

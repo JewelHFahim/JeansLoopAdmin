@@ -185,6 +185,7 @@ export default function ProductsListPage() {
           <div className="lg:col-span-1">
             <SearchInput
               placeholder="SEARCH NAME, SKU..."
+              value={keyword}
               onDebouncedChange={(val) => {
                 setKeyword(val);
                 setPage(1);

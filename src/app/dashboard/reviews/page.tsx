@@ -304,6 +304,7 @@ export default function ReviewsModerationPage() {
           <div className="w-full sm:w-64">
             <SearchInput
               placeholder="Search reviewer, title, text..."
+              value={keyword}
               initialValue={keyword}
               onDebouncedChange={(val) => {
                 setKeyword(val);

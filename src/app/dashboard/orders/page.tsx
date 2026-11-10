@@ -169,6 +169,7 @@ export default function OrdersListPage() {
           <div className="lg:col-span-1">
             <SearchInput
               placeholder="SEARCH NAME, PHONE, CITY, TRXID..."
+              value={keyword}
               onDebouncedChange={(val) => {
                 setKeyword(val);
                 setPage(1);
