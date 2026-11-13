@@ -41,25 +41,97 @@ import { SiteSettings } from '@/lib/api-types';
 type SettingsTab = 'brand' | 'contact' | 'social' | 'preview';
 
 const DEFAULT_SETTINGS: SiteSettings = {
-  title: 'Fire Cutter',
-  tagline: 'Export Mens clothing',
+  title: 'JeansLoop',
+  tagline: 'export clothing zone',
   logo: '',
-  email: 'thefirecutter@gmail.com',
-  phone: '+8801911209322',
-  address: 'Border Bazar, South Monipur, Mirpur, Dhaka',
+  email: 'jeansloop21@gmail.com',
+  phone: '+8801733572774',
+  address: 'Farmgate, Dhaka-1215',
   locationMapUrl: '',
-  businessHours: '10:00 AM - 10:00 PM',
-  announcement: 'Complimentary shipping on orders above ৳2,000!',
-  announcementEnabled: false,
+  businessHours: '10:00 AM - 10:00 PM (Daily)',
+  announcement: '🔥 Special Offer: Use code FIRST10 for 10% off your first order!',
+  announcementEnabled: true,
   announcementLink: '',
   socialLinks: {
-    facebook: 'https://www.facebook.com/firecutter',
+    facebook: 'https://www.facebook.com/jeansloop',
     instagram: '',
     youtube: '',
-    whatsapp: '+8801911209322',
+    whatsapp: '+8801733572774',
     tiktok: '',
   },
 };
+
+function MarqueePreview({
+  text,
+  link,
+  enabled,
+  heightClass = 'h-8',
+}: {
+  text: string;
+  link?: string;
+  enabled: boolean;
+  heightClass?: string;
+}) {
+  const parts = (text || '')
+    .split('|')
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const msgs = parts.length > 0 ? parts : [text || ''];
+  const count = Math.max(4, Math.ceil(8 / msgs.length));
+  const repeated: string[] = [];
+  for (let i = 0; i < count; i++) {
+    repeated.push(...msgs);
+  }
+
+  return (
+    <div
+      className={`announcement-bar-container group relative border-2 border-black overflow-hidden shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] ${heightClass} flex items-center transition-opacity ${
+        enabled ? 'bg-black text-amber-300' : 'bg-neutral-800 text-neutral-400 opacity-60'
+      }`}
+    >
+      <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-black to-transparent z-10" />
+      <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-black to-transparent z-10" />
+      <div className="animate-marquee-rtl flex items-center shrink-0">
+        <div className="flex items-center shrink-0">
+          {repeated.map((msg, idx) => (
+            <div key={`p1-${idx}`} className="inline-flex items-center gap-2 px-4 shrink-0">
+              <Megaphone className="h-3 w-3 flex-shrink-0 animate-pulse text-amber-300" />
+              <span className="text-[11px] font-black uppercase tracking-wider text-amber-300 whitespace-nowrap">
+                {msg}
+              </span>
+              {link && (
+                <span className="inline-flex items-center gap-0.5 text-[9px] font-black underline uppercase text-white tracking-widest ml-1">
+                  Explore <ArrowRight className="h-2 w-2" />
+                </span>
+              )}
+              <span className="text-amber-400/50 text-[9px] pl-2 select-none" aria-hidden="true">
+                ✦
+              </span>
+            </div>
+          ))}
+        </div>
+        <div className="flex items-center shrink-0" aria-hidden="true">
+          {repeated.map((msg, idx) => (
+            <div key={`p2-${idx}`} className="inline-flex items-center gap-2 px-4 shrink-0">
+              <Megaphone className="h-3 w-3 flex-shrink-0 animate-pulse text-amber-300" />
+              <span className="text-[11px] font-black uppercase tracking-wider text-amber-300 whitespace-nowrap">
+                {msg}
+              </span>
+              {link && (
+                <span className="inline-flex items-center gap-0.5 text-[9px] font-black underline uppercase text-white tracking-widest ml-1">
+                  Explore <ArrowRight className="h-2 w-2" />
+                </span>
+              )}
+              <span className="text-amber-400/50 text-[9px] pl-2 select-none" aria-hidden="true">
+                ✦
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function SiteSettingsPage() {
   const router = useRouter();
@@ -426,7 +498,7 @@ export default function SiteSettingsPage() {
                       onClick={() =>
                         setFormData((prev) => ({
                           ...prev,
-                          announcementEnabled: prev.announcementEnabled === false ? true : false,
+                          announcementEnabled: !(prev.announcementEnabled !== false),
                         }))
                       }
                       className={`px-4 py-2 border-2 border-black font-black text-xs uppercase tracking-wider transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 flex items-center justify-center gap-2 ${
@@ -459,6 +531,10 @@ export default function SiteSettingsPage() {
                       placeholder="e.g. Complimentary shipping inside Dhaka on orders above ৳2,000!"
                       className="w-full rounded-none border-2 border-black bg-white px-4 py-3 text-xs font-bold placeholder:text-neutral-400 placeholder:font-normal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black"
                     />
+                    <p className="text-[11px] text-neutral-500">
+                      Moves smoothly from right to left across the storefront and pauses on hover. 
+                      <span className="font-bold text-neutral-700"> Tip:</span> Use vertical pipe <code className="bg-neutral-200 px-1 py-0.5 font-mono text-[10px]">|</code> to separate multiple messages.
+                    </p>
                   </div>
 
                   {/* Preset Template Chips */}
@@ -519,35 +595,24 @@ export default function SiteSettingsPage() {
                   {/* Live Realistic Preview */}
                   <div className="pt-2">
                     <span className="text-[10px] font-black uppercase tracking-widest text-neutral-500 block mb-1.5 flex items-center justify-between">
-                      <span>Live Storefront Ticker Preview:</span>
+                      <span>Live Storefront Ticker Preview (Moving Right to Left):</span>
                       {formData.announcementEnabled === false && (
                         <span className="text-amber-700 font-bold">⚠️ Hidden on storefront while toggled OFF</span>
                       )}
                     </span>
 
-                    <div className="border-2 border-black overflow-hidden shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
-                      {formData.announcement ? (
-                        <div
-                          className={`py-2 px-4 flex items-center justify-center gap-2 text-center transition-opacity ${
-                            formData.announcementEnabled !== false ? 'bg-black text-amber-300' : 'bg-neutral-800 text-neutral-400 opacity-60'
-                          }`}
-                        >
-                          <Megaphone className="h-3.5 w-3.5 flex-shrink-0 animate-pulse text-amber-300" />
-                          <span className="text-[11px] font-black uppercase tracking-wider">
-                            {formData.announcement}
-                          </span>
-                          {formData.announcementLink && (
-                            <span className="inline-flex items-center gap-1 text-[10px] font-black underline uppercase text-white tracking-widest ml-1">
-                              Explore <ArrowRight className="h-2.5 w-2.5" />
-                            </span>
-                          )}
-                        </div>
-                      ) : (
-                        <div className="bg-neutral-100 text-neutral-400 py-2.5 px-4 text-center text-[10px] font-bold uppercase tracking-wider">
-                          Enter banner text above to see live preview
-                        </div>
-                      )}
-                    </div>
+                    {formData.announcement?.trim() ? (
+                      <MarqueePreview
+                        text={formData.announcement}
+                        link={formData.announcementLink}
+                        enabled={formData.announcementEnabled !== false}
+                        heightClass="h-9"
+                      />
+                    ) : (
+                      <div className="border-2 border-black border-dashed bg-neutral-100 text-neutral-400 py-2.5 px-4 text-center text-[10px] font-bold uppercase tracking-wider">
+                        Enter banner text above to see live preview
+                      </div>
+                    )}
                   </div>
                 </CardContent>
               </Card>
@@ -1008,15 +1073,12 @@ export default function SiteSettingsPage() {
 
                 {/* Announcement Ticker */}
                 {formData.announcementEnabled !== false && formData.announcement?.trim() ? (
-                  <div className="bg-black text-amber-300 py-2 px-4 flex items-center justify-center gap-2 text-center text-[10px] font-black uppercase tracking-widest border-b border-neutral-800">
-                    <Megaphone className="h-3 w-3 text-amber-300 animate-pulse flex-shrink-0" />
-                    <span>{formData.announcement}</span>
-                    {formData.announcementLink && (
-                      <span className="text-white underline ml-1 text-[9px] font-bold">
-                        Explore →
-                      </span>
-                    )}
-                  </div>
+                  <MarqueePreview
+                    text={formData.announcement}
+                    link={formData.announcementLink}
+                    enabled={true}
+                    heightClass="h-7 border-0 border-b border-neutral-800 shadow-none"
+                  />
                 ) : (
                   <div className="bg-neutral-100 text-neutral-400 py-1.5 px-4 text-center text-[9px] font-bold uppercase tracking-wider border-b border-neutral-300 border-dashed">
                     [ Announcement Ticker is currently disabled or empty ]

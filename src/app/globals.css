@@ -32,3 +32,34 @@ body {
 ::-webkit-scrollbar-thumb {
   background: #000000;
 }
+
+/* ─── Marquee Announcement Ticker (Smooth Right-to-Left Continuous Loop) ─── */
+@keyframes marquee-rtl {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee-rtl {
+  display: inline-flex;
+  width: max-content;
+  white-space: nowrap;
+  animation: marquee-rtl 60s linear infinite;
+  will-change: transform;
+}
+
+.announcement-bar-container:hover .animate-marquee-rtl,
+.announcement-bar-container:focus-within .animate-marquee-rtl,
+.announcement-bar-container:active .animate-marquee-rtl {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee-rtl {
+    animation-duration: 60s;
+  }
+}
+
