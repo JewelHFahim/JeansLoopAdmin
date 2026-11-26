@@ -41,16 +41,16 @@ import { SiteSettings } from '@/lib/api-types';
 type SettingsTab = 'brand' | 'contact' | 'social' | 'preview';
 
 const DEFAULT_SETTINGS: SiteSettings = {
-  title: 'JeansLoop',
-  tagline: 'export clothing zone',
+  title: 'Fire Cutter',
+  tagline: 'Export Mens clothing',
   logo: '',
   email: 'jeansloop21@gmail.com',
   phone: '+8801733572774',
   address: 'Farmgate, Dhaka-1215',
   locationMapUrl: '',
   businessHours: '10:00 AM - 10:00 PM (Daily)',
-  announcement: '🔥 Special Offer: Use code FIRST10 for 10% off your first order!',
-  announcementEnabled: true,
+  announcement: '',
+  announcementEnabled: false,
   announcementLink: '',
   socialLinks: {
     facebook: 'https://www.facebook.com/jeansloop',
